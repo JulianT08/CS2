@@ -147,7 +147,7 @@ def main():
                     else:
                         #an error is pushed to the user if the split of the user's input returns 5 values. The user is then redirected to the begining of the loop
                         print('''Error:
-There must be 5 numerical inputs separated by commas.
+There must be 5 numerical inputs separated by commas. For example: 4, 5, .01, 06830, 67840 will return $0.32.
                               ''')
                 for i in range(0,len(types_of_packages)):
                     if types_of_packages[i] == postage_type:     
