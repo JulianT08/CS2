@@ -7,8 +7,8 @@ subtracting the destination's zone by the starting zone. Each package type has a
 The equation: price = intial cost + (cost per zone * distance between zones) is the formula for this program. 
 The program also provides a breakdown of the price and allows the user to export to excel. 
 
-Bugs: For example "Fails under x parameters"
-Features: 
+Bugs: none found
+Features: breaks down the cost formula, exports to excel 
 Sources: https://programming-24.mooc.fi/part-4/5-print-statement-formatting (used on line 164), 
 password_keeper.py (by Julian Toub)
 Log: 1
