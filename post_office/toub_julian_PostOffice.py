@@ -121,88 +121,84 @@ def main():
     Raises:
         ValueError: If any of the entries do not meet the requirements. 
     '''
-    #The loop will ask if the user would like to initiate the code and then proceed through the program using the main function
-    while True:
-        run_the_code = str.lower(input("Would you like to run the code? \n"))
-        if 'no' in run_the_code:
-            print('OK')
-            break
-        else:
-            try:
+    count = 0
+    while count < 5:
+        count += 1
+        try:
+            while True:
+                #splits the user's input into 5 data points
+                dimensions = input("Enter the data as 'Length, Height, Width, Starting Zip Code, Ending Zip Code:  ").split(",")  
+                if len(dimensions) == 5:                                                #checks to make sure that the user inputted 5 numbers
+                    length = float(dimensions[0])                                       #sets the variable 'lenght' = to the first user input
+                    height = float(dimensions[1])                                       #sets the variable 'height' = to the second user input                                      
+                    width = float(dimensions[2])                                        #sets the variable 'width' = to the third user input
+                    zip_start = int(dimensions[3])                                      #sets the variable 'zip_start' = to the fourth user input
+                    zip_end = int(dimensions[4])                                        #sets the variable 'zip_end' = to the fifth user input
+                    distance = abs(get_zone(zip_end) - get_zone(zip_start))             #calculates the distance in zones from the start to the end point
+                    types_of_packages = ['reg_post_card', 'large_post_card', 'envelope', 'large_envelope', 'reg_package', 'large_package'] #creates a list of all of the viable types of packages
+                    postage_type = get_postage_type(length, height, width)              #creates a variable called "postage_type" this will retrieve the returned type of package
+                    intial_package_costs = [.20, .37, .37, .60, 2.95, 3.95]             #creates a list of all of the inital costs per package type. This list is parrallel to the types_of_packages list
+                    cost_per_zone = [.03,.03,.04,.05,.25,.35]                           #creates a list of the price per zone per package type. This list is parrallel to the types_of_packages list
+                    break
+                else:
+                    #an error is pushed to the user if the split of the user's input returns 5 values. The user is then redirected to the begining of the loop
+                    print('''Error:
+There must be 5 numerical inputs separated by commas. For example: 4, 5, .01, 06830, 67840 will return $0.32.
+                            ''')
+            for i in range(0,len(types_of_packages)):
+                if types_of_packages[i] == postage_type:     
+                    initial_package = intial_package_costs[i]
+                    cost_travelled = cost_per_zone[i]
+            if length < 0:
+                print('Length cannot be negative.')                                     #checks to see if the input 'length' is negative. if it is, the loop will require that the data is re-entered
+            elif height < 0:
+                print('Height cannot be negative.')                                     #checks to see if the input 'height' is negative. if it is, the loop will require that the data is re-entered 
+            elif width < 0:
+                print('Width cannot be negative.')                                      #checks to see if the input 'width' is negative. if it is, the loop will require that the data is re-entered
+            else:                                                                       #if all variables check out (not negative), the code will proceed. 
+                postage_type = get_postage_type(length, height, width)
+                if postage_type == 'unmailable':
+                    print("Package is unmailable ")
+                total_cost = calculate_cost(postage_type, distance)
+                print(f'{total_cost:.2f}')
+                user_breakdown_cost = str.lower(input('Would you like me to breakdown the cost formula? '))
+                if 'y' in user_breakdown_cost:
+                    print(f'''
+                            Your package type is a(n) {postage_type}, and you are shipping it across {distance} shipping zones.
+                            The initial cost for a(n) {postage_type} is ${initial_package:.2f} and it costs ${cost_travelled:.2f} per zone
+                            ''')    
                 while True:
-                    #splits the user's input into 5 data points
-                    dimensions = input("Enter the data as 'Length, Height, Width, Starting Zip Code, Ending Zip Code:  ").split(",")  
-                    if len(dimensions) == 5:                                                #checks to make sure that the user inputted 5 numbers
-                        length = float(dimensions[0])                                       #sets the variable 'lenght' = to the first user input
-                        height = float(dimensions[1])                                       #sets the variable 'height' = to the second user input                                      
-                        width = float(dimensions[2])                                        #sets the variable 'width' = to the third user input
-                        zip_start = int(dimensions[3])                                      #sets the variable 'zip_start' = to the fourth user input
-                        zip_end = int(dimensions[4])                                        #sets the variable 'zip_end' = to the fifth user input
-                        distance = abs(get_zone(zip_end) - get_zone(zip_start))             #calculates the distance in zones from the start to the end point
-                        types_of_packages = ['reg_post_card', 'large_post_card', 'envelope', 'large_envelope', 'reg_package', 'large_package'] #creates a list of all of the viable types of packages
-                        postage_type = get_postage_type(length, height, width)              #creates a variable called "postage_type" this will retrieve the returned type of package
-                        intial_package_costs = [.20, .37, .37, .60, 2.95, 3.95]             #creates a list of all of the inital costs per package type. This list is parrallel to the types_of_packages list
-                        cost_per_zone = [.03,.03,.04,.05,.25,.35]                           #creates a list of the price per zone per package type. This list is parrallel to the types_of_packages list
+                    user_export_excel = str.lower(input("Would you like to export the cost breakdown to excel? "))     
+                    if 'y' in user_export_excel:
+                        # Create lists for the values
+                        columns = {
+                            'Initial Cost': [initial_package],
+                            'Distance (in zones)': [distance],
+                            'Cost per zone': [cost_travelled],
+                            'Total Price': [total_cost]
+                        }
+
+                        # Prepare the rows for CSV export
+                        rows = zip(columns['Initial Cost'], columns['Distance (in zones)'], columns['Cost per zone'], columns['Total Price'])
+
+                        # Write to CSV
+                        with open('post_office.csv', 'w', newline='') as f:
+                            writer = csv.writer(f)
+                            writer.writerow(['Initial Cost', 'Distance (in zones)', 'Cost per zone', 'TOTAL PRICE = Initial Cost + (Distance * Cost per zone)'])
+                            writer.writerows(rows)
+
+                        folder = Path.cwd()
+                        print(f'''
+                        Data successfully stored in the same folder as the project.
+                        The folder is {folder} and the file name is "post_office"
+                        ''')
                         break
                     else:
-                        #an error is pushed to the user if the split of the user's input returns 5 values. The user is then redirected to the begining of the loop
-                        print('''Error:
-There must be 5 numerical inputs separated by commas. For example: 4, 5, .01, 06830, 67840 will return $0.32.
-                              ''')
-                for i in range(0,len(types_of_packages)):
-                    if types_of_packages[i] == postage_type:     
-                        initial_package = intial_package_costs[i]
-                        cost_travelled = cost_per_zone[i]
-                if length < 0:
-                    print('Length cannot be negative.')                                     #checks to see if the input 'length' is negative. if it is, the loop will require that the data is re-entered
-                elif height < 0:
-                    print('Height cannot be negative.')                                     #checks to see if the input 'height' is negative. if it is, the loop will require that the data is re-entered 
-                elif width < 0:
-                    print('Width cannot be negative.')                                      #checks to see if the input 'width' is negative. if it is, the loop will require that the data is re-entered
-                else:                                                                       #if all variables check out (not negative), the code will proceed. 
-                    postage_type = get_postage_type(length, height, width)
-                    if postage_type == 'unmailable':
-                        print("Package is unmailable ")
-                    total_cost = calculate_cost(postage_type, distance)
-                    print(f'Total Cost = {total_cost:.2f}')
-                    user_breakdown_cost = str.lower(input('Would you like me to breakdown the cost formula? '))
-                    if 'y' in user_breakdown_cost:
-                        print(f'''
-                              Your package type is a(n) {postage_type}, and you are shipping it across {distance} shipping zones.
-                              The initial cost for a(n) {postage_type} is ${initial_package:.2f} and it costs ${cost_travelled:.2f} per zone
-                              ''')    
-                    while True:
-                        user_export_excel = str.lower(input("Would you like to export the cost breakdown to excel? "))     
-                        if 'y' in user_export_excel:
-                            # Create lists for the values
-                            columns = {
-                                'Initial Cost': [initial_package],
-                                'Distance (in zones)': [distance],
-                                'Cost per zone': [cost_travelled],
-                                'Total Price': [total_cost]
-                            }
-
-                            # Prepare the rows for CSV export
-                            rows = zip(columns['Initial Cost'], columns['Distance (in zones)'], columns['Cost per zone'], columns['Total Price'])
-
-                            # Write to CSV
-                            with open('post_office.csv', 'w', newline='') as f:
-                                writer = csv.writer(f)
-                                writer.writerow(['Initial Cost', 'Distance (in zones)', 'Cost per zone', 'TOTAL PRICE = Initial Cost + (Distance * Cost per zone)'])
-                                writer.writerows(rows)
-
-                            folder = Path.cwd()
-                            print(f'''
-                            Data successfully stored in the same folder as the project.
-                            The folder is {folder} and the file name is "post_office"
-                            ''')
-                            break
-                        else:
-                            break
-                   
-            except ValueError:
-                #if the user enteres a value that is not in the proper format, the error will be caught. 
-                "Please check all of your entries and make sure they correspond with the format."
+                        break
+                
+        except ValueError:
+            #if the user enteres a value that is not in the proper format, the error will be caught. 
+            "Please check all of your entries and make sure they correspond with the format."
 #Calls the main function
 if __name__ == "__main__":
     main()
