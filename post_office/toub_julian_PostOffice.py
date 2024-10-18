@@ -160,7 +160,8 @@ There must be 5 numerical inputs separated by commas. For example: 4, 5, .01, 06
                 if postage_type == 'unmailable':
                     print("Package is unmailable ")
                 total_cost = calculate_cost(postage_type, distance)
-                print(f'{total_cost:.2f}')
+                stripped_cost = str('%.2f'%total_cost).lstrip('0')
+                print(stripped_cost)
                 user_breakdown_cost = str.lower(input('Would you like me to breakdown the cost formula? '))
                 if 'y' in user_breakdown_cost:
                     print(f'''
