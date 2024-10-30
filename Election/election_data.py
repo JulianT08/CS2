@@ -3,7 +3,40 @@ import csv
 import string
 
 fhand = open('kamala.txt')
+counts = dict()#Sources: https://www.freecodecamp.org/news/sort-dictionary-by-value-in-python/, https://stackoverflow.com/questions/26660654/how-do-i-print-the-key-value-pairs-of-a-dictionary-in-python
+import csv
+import string
+#opens the desired txt file, assigns the value fhand to the file. 
+fhand = open('trump.txt')
+#creates an empty dictionary called "counts".
 counts = dict()
+#iterates through every line of the file (fhand). Creates a variable called line
+# which is equal to each line of the text. **** WHAT IS RSTRIP ****
+for line in fhand:
+    line = line.rstrip()
+    line = line.translate(line.maketrans("", "", string.punctuation))
+    line = line.lower()
+    words = line.split()
+#iterates through every word in each line and if the word is equal to one of the words in the
+# list below, the code will continue through.  
+####
+    for word in words:
+        if word in ['the','and', 'this', 'that', 'how', 'them', 'an', 'to', 'i', 'about', 'with', 'in', 'am', 'when', 'so', 'who', 'has', 'be', 'going', 'as', 'she', 'he', 'of', 'a', 'for', 'we', 'is', 'my', 'not', 'on', 'our', 'we', 'is', 'have', 'are', 'will', 'it', 'but', 'would', 'was', 'one', 'their', 'what', 'out', 'because', 'at', 'out', 'you']:
+            continue
+        elif word not in counts:
+            counts[word] = 1 
+        else:
+            counts[word] += 1
+sorted_dict = counts[word]
+sorted_dict = dict(sorted(counts.items(), key=lambda x:x[1], reverse=True))
+
+with open('election_data.csv', 'w', newline='') as file:
+    counter = 0
+    for key, value in sorted_dict.items():
+        if value >= 10 and counter <= 15:
+            counter += 1
+            file.writelines(key + ',' + str(value) + "\n")
+           
 
 for line in fhand:
     line = line.rstrip()
