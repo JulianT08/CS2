@@ -14,14 +14,13 @@ https://www.geeksforgeeks.org/plot-a-pie-chart-in-python-using-matplotlib/
 
 Log: 1
 '''
-import csv
 import string
 import numpy as np
 import matplotlib.pyplot as plt
 counter = 0
 terms = []
 freq = []
-fhand = open('kamala.txt')         # Opens the desired txt file, assigns the value fhand to the file. 
+fhand = open('trump.txt')         # Opens the desired txt file, assigns the value fhand to the file. 
 counts = dict()                    # Creates an empty dictionary called "counts".
 # The for loop iterates through every line of the file (fhand). Creates a variable called line
 # which is equal to each line of the text. The trailing white space is removed and the punctuation is omitted.
@@ -43,22 +42,17 @@ for line in fhand:
             counts[word] += 1
 sorted_dict = dict(sorted(counts.items(), key=lambda x:x[1], reverse=True))     # "sorted_dict" is equal to 
 # The sorted version of the dictionary "couts" in decescending order. 
-
 # Creates a csv file called "JT_election_data.csv". This block will reference the variable "counter" that is
 # stored at the begining of the program. If the value is >= to 10 and the coutner is <= 15, the key-value pair
 # will be written to excel. 
-
 # TO USE EXCEL, MAKE SURE THE CODE BELOW IS UNCOMMENTED AND THE CODE FOR MATPLOTLIB IS COMMENTED OUT
 with open('JT_election_data.csv', 'w', newline='') as file:
     for key, value in sorted_dict.items():
         if value >= 10 and counter <= 15:
             counter += 1
             file.writelines(key + ',' + str(value) + "\n")
-
-
 # If the value is >= 10 and counter is <= 15, the key is added to a list called "terms" and the value is added
 # to a list called "freq". Then, it creates a chart using Matplotlib. 
-
 # TO USE MATPLOTLIB, UNCOMMENT THE BELOW SECTION AND COMMENT OUT THE PREVIOUS ONE
 # for key, value in sorted_dict.items():
 #     if value >= 10 and counter <= 15:
@@ -66,7 +60,6 @@ with open('JT_election_data.csv', 'w', newline='') as file:
 #         terms.append(key)
 #         freq.append(value)
 #             #file.writelines(key + ',' + str(value) + "\n")
-
 # fig = plt.figure(figsize=(10, 7))
 # plt.pie(freq, labels=terms)
 # plt.show()
