@@ -32,7 +32,7 @@ sorted_dict = dict(sorted(counts.items(), key=lambda x:x[1], reverse=True))
 counter = 0
 terms = []
 freq = []
-with open('election_data.csv', 'w', newline='') as file:
+with open('JT_election_data.csv', 'w', newline='') as file:
     for key, value in sorted_dict.items():
         if value >= 10 and counter <= 15:
             counter += 1
