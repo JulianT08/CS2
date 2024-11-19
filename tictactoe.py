@@ -20,14 +20,41 @@ Raises:
     none
 """
 def moveuser(board):
-    rowuser = int(input('ROW:  '))
-    coluser = int(input('COL:  '))
-    while str(board[rowuser][coluser]) == "X" or str(board[rowuser][coluser]) == "O":
-        print('''
-Make sure that you are not attempting to place your move on top of opponents move or your own move. ''')
-        rowuser = int(input('ROW:  '))
-        coluser = int(input('COL:  '))
-    return rowuser, coluser
+    while True:
+        userchoice = int(input("Move: "))
+        if userchoice == 1 and str(board[0][0]) != "X" and str(board[[0][0]]) != "O":
+            board[0][0] = "X"
+            break
+        elif userchoice == 2 and str(board[0][1]) != "X" and str(board[0][1]) != "O":
+            board[0][1] = "X"
+            break
+        elif userchoice == 3 and str(board[0][2]) != "X" and str(board[0][2]) != "O":
+            board[0][2] = "X"
+            break
+        elif userchoice == 4 and str(board[1][0]) != "X" and str(board[1][0]) != "O":
+            board[1][0] = "X"
+            break
+        elif userchoice == 5 and str(board[1][1]) != "X" and str(board[1][1]) != "O":
+            board[1][1] = "X"
+            break
+        elif userchoice == 6 and str(board[1][2]) != "X" and str(board[1][2]) != "O":
+            board[1][2] = "X"
+            break
+        elif userchoice == 7 and str(board[2][0]) != "X" and str(board[2][0]) != "O":
+            board[2][0] = "X"
+            break
+        elif userchoice == 8 and str(board[2][1]) != "X" and str(board[2][1]) != "O":
+            board[2][1] = "X"
+            break
+        elif userchoice == 9 and str(board[2][2]) != "X" and str(board[2][2]) != "O":
+            board[2][2] = "X"
+            break
+        else:
+            print('''
+Make sure that you are not attempting to place your move on top of opponents move or your own move. 
+AND that your move is a number 1-9. \n''')
+        
+    return userchoice
 
 """
 Promps the user for the row and colomn for their move.
@@ -42,6 +69,17 @@ Returns:
 Raises:
     none
 """
+def first_two_botmove(board):
+    rows = random.choice([0,2])
+    cols = random.choice([0, 2])
+    move = board[rows][cols]    
+    while str(board[rows][cols]) == "X" or str(board[rows][cols]) == "O":
+        rows = random.choice([0,2])
+        cols = random.choice([0, 2])
+        move = board[rows][cols]
+    board[rows][cols] = "O"  
+    return move
+
 def botmove(board):
     while True:
         rowbot = random.randint(0,2)
@@ -103,45 +141,60 @@ def checkwin(board):
         sys.exit()                       
 
 def main():
-    board = [[0,1,2],
-         [3,4,5],
-         [6,7,8]]
+    board = [[1,2,3],
+         [4,5,6],
+         [7,8,9]]
+
     moves = 0
     print('''
 User = X
 Bot = O''')
     random_num = random.randint(1,2)
+    #if the random number is 1, the user will go first
     if random_num == 1:
         while moves < 5:
-            #move = moveuser(rowuser, coluser)
+            moves += 1
+            if moves == 1:
+                board_print(board)
+            moveuser(board)
             board_print(board)
-            rowuser,coluser = moveuser(board)
-            board[rowuser][coluser] = 'X'
-            board_print(board)
-            rowbot, colbot = botmove(board)
-            board[rowbot][colbot] = "O"
+            checkwin(board)
+            if moves <= 2:
+                first_two_botmove(board)
+            else:
+                rowbot, colbot = botmove(board)
+                board[rowbot][colbot] = "O"
             print("\n NOW THE BOT WILL MOVE: ")
+            time.sleep(1)
             board_print(board)
             print()
             checkwin(board)
-            moves += 1
-    else:
+    else: #if the number is not 1, the bot will go first
         print('''
 Welcome to the Tic Tac Toe game! You will be playing against a robot. Randomly, the starter has been assigned as BOT.''')
-        time.sleep(3)
+        time.sleep(1)
         while moves < 5:
-            board_print(board)
-            rowbot, colbot = botmove(board)
-            board[rowbot][colbot] = "O"
-            print("\n NOW THE BOT WILL MOVE: ")
-            board_print(board)
-            print('''
-Now you will move.''')
-            rowuser,coluser = moveuser(board)
-            board[rowuser][coluser] = 'X'
-            board_print(board)
-            checkwin(board)
             moves += 1
+            if moves <= 3:
+                first_two_botmove(board)
+                print("\n THE BOT WILL MOVE: ")
+                board_print(board)
+                print('''
+    Now you will move.''')
+                moveuser(board)
+                board_print(board)
+                checkwin(board)
+            else:
+                rowbot, colbot = botmove(board)
+                board[rowbot][colbot] = "O"
+                print("\n THE BOT WILL MOVE: ")
+                board_print(board)
+                checkwin(board)
+                print('''
+    Now you will move.''')
+                moveuser(board)
+                board_print(board)
+                checkwin(board)
 
 
 if __name__ == "__main__":
