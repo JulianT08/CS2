@@ -21,40 +21,39 @@ Raises:
 """
 def moveuser(board):
     while True:
-        userchoice = int(input("Move: "))
-        if userchoice == 1 and str(board[0][0]) != "X" and str(board[[0][0]]) != "O":
-            board[0][0] = "X"
-            break
-        elif userchoice == 2 and str(board[0][1]) != "X" and str(board[0][1]) != "O":
-            board[0][1] = "X"
-            break
-        elif userchoice == 3 and str(board[0][2]) != "X" and str(board[0][2]) != "O":
-            board[0][2] = "X"
-            break
-        elif userchoice == 4 and str(board[1][0]) != "X" and str(board[1][0]) != "O":
-            board[1][0] = "X"
-            break
-        elif userchoice == 5 and str(board[1][1]) != "X" and str(board[1][1]) != "O":
-            board[1][1] = "X"
-            break
-        elif userchoice == 6 and str(board[1][2]) != "X" and str(board[1][2]) != "O":
-            board[1][2] = "X"
-            break
-        elif userchoice == 7 and str(board[2][0]) != "X" and str(board[2][0]) != "O":
-            board[2][0] = "X"
-            break
-        elif userchoice == 8 and str(board[2][1]) != "X" and str(board[2][1]) != "O":
-            board[2][1] = "X"
-            break
-        elif userchoice == 9 and str(board[2][2]) != "X" and str(board[2][2]) != "O":
-            board[2][2] = "X"
-            break
+        userchoice = input("Move: ")
+        if userchoice.isdigit() and int(userchoice) <= 9:
+            if int(userchoice) == 1 and str(board[0][0]) != "X" and str(board[[0][0]]) != "O":
+                board[0][0] = "X"
+                return userchoice
+            elif int(userchoice) == 2 and str(board[0][1]) != "X" and str(board[0][1]) != "O":
+                board[0][1] = "X"
+                return userchoice
+            elif int(userchoice) == 3 and str(board[0][2]) != "X" and str(board[0][2]) != "O":
+                board[0][2] = "X"
+                return userchoice
+            elif int(userchoice) == 4 and str(board[1][0]) != "X" and str(board[1][0]) != "O":
+                board[1][0] = "X"
+                return userchoice
+            elif int(userchoice) == 5 and str(board[1][1]) != "X" and str(board[1][1]) != "O":
+                board[1][1] = "X"
+                return userchoice
+            elif int(userchoice) == 6 and str(board[1][2]) != "X" and str(board[1][2]) != "O":
+                board[1][2] = "X"
+                return userchoice
+            elif int(userchoice) == 7 and str(board[2][0]) != "X" and str(board[2][0]) != "O":
+                board[2][0] = "X"
+                return userchoice
+            elif int(userchoice) == 8 and str(board[2][1]) != "X" and str(board[2][1]) != "O":
+                board[2][1] = "X"
+                return userchoice
+            elif int(userchoice) == 9 and str(board[2][2]) != "X" and str(board[2][2]) != "O":
+                board[2][2] = "X"
+                return userchoice
         else:
             print('''
 Make sure that you are not attempting to place your move on top of opponents move or your own move. 
 AND that your move is a number 1-9. \n''')
-        
-    return userchoice
 
 """
 Promps the user for the row and colomn for their move.
@@ -158,9 +157,18 @@ Bot = O''')
                 board_print(board)
             moveuser(board)
             board_print(board)
-            checkwin(board)
             if moves <= 2:
                 first_two_botmove(board)
+            elif moves == 3 and str(board[1][1]) != "X":
+                board[1][1] = "O"
+                board_print(board)
+                checkwin(board)
+                print('''
+Now you will move.''')
+                moveuser(board)
+                board_print(board)
+                checkwin(board)
+
             else:
                 rowbot, colbot = botmove(board)
                 board[rowbot][colbot] = "O"
@@ -175,12 +183,20 @@ Welcome to the Tic Tac Toe game! You will be playing against a robot. Randomly, 
         time.sleep(1)
         while moves < 5:
             moves += 1
-            if moves <= 3:
+            if moves <= 2:
                 first_two_botmove(board)
                 print("\n THE BOT WILL MOVE: ")
                 board_print(board)
                 print('''
     Now you will move.''')
+                moveuser(board)
+                board_print(board)
+            elif moves == 3 and str(board[1][1]) != "X":
+                board[1][1] == "O"
+                board_print(board)
+                checkwin(board)
+                print('''
+Now you will move.''')
                 moveuser(board)
                 board_print(board)
                 checkwin(board)
