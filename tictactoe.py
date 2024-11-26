@@ -86,7 +86,6 @@ def botmove(board):
         while str(board[rowbot][colbot]) == "X" or str(board[rowbot][colbot]) == "O":
             rowbot = random.randint(0,2)
             colbot = random.randint(0,2)
-
         return rowbot, colbot
 
 def checkwin(board):
@@ -151,25 +150,32 @@ Bot = O''')
     random_num = random.randint(1,2)
     #if the random number is 1, the user will go first
     if random_num == 1:
-        while moves < 5:
-            moves += 1
-            if moves == 1:
+        while moves <= 8:
+            if moves == 0:
                 board_print(board)
+            moves += 1
             moveuser(board)
             board_print(board)
+            checkwin(board)
             if moves <= 2:
+                moves += 1
                 first_two_botmove(board)
             elif moves == 3 and str(board[1][1]) != "X":
+                moves += 1
                 board[1][1] = "O"
+                print("\n NOW THE BOT WILL MOVE: ")
                 board_print(board)
                 checkwin(board)
                 print('''
 Now you will move.''')
+                moves += 1
                 moveuser(board)
                 board_print(board)
                 checkwin(board)
-
+            
             else:
+                checkwin(board)
+                moves += 1
                 rowbot, colbot = botmove(board)
                 board[rowbot][colbot] = "O"
             print("\n NOW THE BOT WILL MOVE: ")
@@ -177,11 +183,14 @@ Now you will move.''')
             board_print(board)
             print()
             checkwin(board)
+        else:
+            print("Game is a draw. ")
+            sys.exit()
     else: #if the number is not 1, the bot will go first
         print('''
 Welcome to the Tic Tac Toe game! You will be playing against a robot. Randomly, the starter has been assigned as BOT.''')
         time.sleep(1)
-        while moves < 5:
+        while moves <= 8:
             moves += 1
             if moves <= 2:
                 first_two_botmove(board)
@@ -192,7 +201,8 @@ Welcome to the Tic Tac Toe game! You will be playing against a robot. Randomly, 
                 moveuser(board)
                 board_print(board)
             elif moves == 3 and str(board[1][1]) != "X":
-                board[1][1] == "O"
+                board[1][1] = "O"
+                print("\n THE BOT WILL MOVE: ")
                 board_print(board)
                 checkwin(board)
                 print('''
@@ -211,6 +221,9 @@ Now you will move.''')
                 moveuser(board)
                 board_print(board)
                 checkwin(board)
+        else:
+            print("Game is a draw. ")
+            sys.exit()
 
 
 if __name__ == "__main__":
