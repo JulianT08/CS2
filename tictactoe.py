@@ -11,7 +11,7 @@ def board_print(board):
 Prints the board by iterating through the length of it (3x3).
 
 Args:
-    board (list): A list of the 3 rows.
+    board(list): A list of the 3 rows.
 
 Returns:
     Prints the board item by item.
@@ -56,28 +56,40 @@ Make sure that you are not attempting to place your move on top of opponents mov
 AND that your move is a number 1-9. \n''')
 
 """
-Promps the user for the row and colomn for their move.
+Promps the user for the row and colomn for their move. Checks that the move is valid and has not 
+already been made. 
 
 Args:
-    none
+    board(list): A list of the 3 rows.
 
 Returns:
-    rowuser(int): The row for the user's move.
-    coluser(int): The column for the user's move.
+    userchoice(strr): The selected box (1-9) for the user's move.
 
 Raises:
     none
 """
 def first_two_botmove(board):
-    rows = random.choice([0,2])
+    rows = random.choice([0, 2])
     cols = random.choice([0, 2])
     move = board[rows][cols]    
     while str(board[rows][cols]) == "X" or str(board[rows][cols]) == "O":
-        rows = random.choice([0,2])
+        rows = random.choice([0, 2])
         cols = random.choice([0, 2])
         move = board[rows][cols]
     board[rows][cols] = "O"  
     return move
+"""
+Generates a random corner for the bot to move to. The valid options are any corners spots.
+
+Args:
+    board(list): A list of the 3 rows.
+
+Returns:
+    move(any): The coordinates for the bot's move.
+
+Raises:
+    none
+"""
 
 def botmove(board):
     while True:
@@ -87,7 +99,19 @@ def botmove(board):
             rowbot = random.randint(0,2)
             colbot = random.randint(0,2)
         return rowbot, colbot
+"""
+Generates a random place for the bot to move to. 
 
+Args:
+    board(list): A list of the 3 rows.
+
+Returns:
+    rowbot(int): The generated row (0-2) for the bot's move.
+    colbot(int): The generated column (0-2) for the bot's move.
+
+Raises:
+    none
+"""
 def checkwin(board):
     if board[0][0]=="X" and board[0][1]=="X" and board[0][2]=="X":
         print("GAME HAS BEEN WON BY THE USER \n")
