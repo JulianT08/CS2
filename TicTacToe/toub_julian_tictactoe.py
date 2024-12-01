@@ -1,4 +1,17 @@
-#source: https://www.geeksforgeeks.org/python-using-2d-arrays-lists-the-right-way/
+'''
+Name: toub_julian_tictactoe.py
+Description: This code allows the user to play Tic Tac Toe against a robot. The robot will play 
+statistically smart moves at the beginning. After that, it randomly reacts to the user's moves.
+
+Bugs: none found
+
+Features: bot plays intelligent first 2-3 moves.  
+
+Sources: https://www.geeksforgeeks.org/python-using-2d-arrays-lists-the-right-way/
+
+Log: 1
+'''
+
 import random
 import sys
 import time
@@ -112,6 +125,7 @@ Returns:
 Raises:
     none
 """
+
 def checkwin(board, player):
     if board[0][0]== player and board[0][1]== player and board[0][2]== player:
         print(f"GAME HAS BEEN WON BY {player} \n")
@@ -137,120 +151,134 @@ def checkwin(board, player):
     elif board[0][2]== player and board[1][2]== player and board[2][2]== player:
         print(f"GAME HAS BEEN WON BY {player} \n")
         sys.exit()
+"""
+Checks if either the user or the bot has made a winning combination. 
+
+Args:
+    board(list): A list of the 3 rows.
+    player(string): Either "X" or "O"
+
+Returns:
+    none
+
+Raises:
+    none
+"""
 
 def main():
-    board = [[1,2,3],
+    
+    board = [[1,2,3],                       #defining the board as a 3 x 3 box, numbered 1-9. 
          [4,5,6],
          [7,8,9]]
 
-    moves = 0
+    moves = 0                               #sets moves to 0
     print('''
 User = X
-Bot = O''')
-    random_num = random.randint(1,2)
-    #if the random number is 1, the user will go first
-    if random_num == 1:
-        while moves <= 8:
-            if moves == 0:
-                board_print(board)
-            moves += 1
-            moveuser(board)
-            board_print(board)
+Bot = O''')                                 #prints the corresponding letter to the player. User = X, Bot = O
+    random_num = random.randint(1,2)        #generates a random number 1-2
+    
+    if random_num == 1:                     #if the random number is 1, the user will go first
+        while moves <= 8:     
+            if moves == 0:                  #if the moves are equal to 0, the board will print     
+                board_print(board)          #print the board
+            moves += 1                
+            moveuser(board)                 #user move
+            board_print(board)              #print the board
             checkwin(board, "X")
             checkwin(board, "O")
             if moves <= 2:
                 moves += 1
-                first_two_botmove(board)
+                first_two_botmove(board)    #function to go to a corner spot
                 print("\n NOW THE BOT WILL MOVE: ")
-                board_print(board)
-            elif moves == 3 and str(board[1][1]) != "X":
+                board_print(board)          #print the board
+            elif moves == 3 and str(board[1][1]) != "X":    #if it is the 3rd move and the middle spot is open, the bot will take that spot
                 moves += 1
-                board[1][1] = "O"
+                board[1][1] = "O"           #places an "O" in the middle spot
                 print("\n NOW THE BOT WILL MOVE: ")
-                board_print(board)
-                checkwin(board, "X")
-                checkwin(board, "O")
+                board_print(board)          #print the board
+                checkwin(board, "X")        #checks if the user has won
+                checkwin(board, "O")        #checks if the bot has won
                 print('''
 Now you will move.''')
                 moves += 1
-                moveuser(board)
-                board_print(board)
-                checkwin(board, "X")
-                checkwin(board, "O")
+                moveuser(board)             #user move
+                board_print(board)          #print the board
+                checkwin(board, "X")        #checks if the user has won
+                checkwin(board, "O")        #checks if the bot has won
                 moves += 1
-                rowbot, colbot = botmove(board)
-                board[rowbot][colbot] = "O"
+                rowbot, colbot = botmove(board) #bot move
+                board[rowbot][colbot] = "O" #places an "O" on the generated spot
                 print("\n NOW THE BOT WILL MOVE: ")
-                time.sleep(1)
-                board_print(board)
+                time.sleep(1)               #one second pause
+                board_print(board)          #print the board
                 print()
-                checkwin(board, "X")
-                checkwin(board, "O")
+                checkwin(board, "X")        #checks if the user has won
+                checkwin(board, "O")        #checks if the bot has won
 
             
-            else:
-                checkwin(board, "X")
-                checkwin(board, "O")
+            else:                           #if the moves are greater than 3:
+                checkwin(board, "X")        #checks if the user has won
+                checkwin(board, "O")        #checks if the bot has won
                 moves += 1
-                rowbot, colbot = botmove(board)
-                board[rowbot][colbot] = "O"
+                rowbot, colbot = botmove(board) #bot move
+                board[rowbot][colbot] = "O" #places an "O" on the generated spot
                 print("\n NOW THE BOT WILL MOVE: ")
-                time.sleep(1)
-                board_print(board)
+                time.sleep(1)               #one second pause
+                board_print(board)          #print the board
                 print()
-                checkwin(board, "X")
-                checkwin(board, "O")
+                checkwin(board, "X")        #checks if the user has won
+                checkwin(board, "O")        #checks if the bot has won
 
-        else:
+        else:                               #if there have been 9 moves and nobody has won, the game is a draw
             print("Game is a draw. ")
             sys.exit()
-    else: #if the number is not 1, the bot will go first
+    else:                                   #if the number is not 1, the bot will go first
         print('''
 Welcome to the Tic Tac Toe game! You will be playing against a robot. Randomly, the starter has been assigned as BOT.''')
         time.sleep(1)
         while moves <= 8:
             if moves <= 2:
                 moves += 1
-                first_two_botmove(board)
+                first_two_botmove(board)    #function to go to a corner spot
                 print("\n THE BOT WILL MOVE: ")
-                board_print(board)
+                board_print(board)          #prints the board
                 print('''
     Now you will move.''')
                 moves += 1
-                moveuser(board)
+                moveuser(board)             #user move
                 board_print(board)
-            elif moves == 3 and str(board[1][1]) != "X":
+            elif moves == 3 and str(board[1][1]) != "X":    #if it is the 3rd move and the middle spot is open, the bot will take that spot
                 moves += 1
-                board[1][1] = "O"
+                board[1][1] = "O"           #place an "O" in the middle
                 print("\n THE BOT WILL MOVE: ")
-                board_print(board)
-                checkwin(board, "X")
-                checkwin(board, "O")
+                board_print(board)          #prints the board
+                checkwin(board, "X")        #checks if the user has won
+                checkwin(board, "O")        #checks if the bot has won
                 print('''
 Now you will move.''')
                 moves += 1        
                 moveuser(board)
                 board_print(board)
-                checkwin(board, "X")
-                checkwin(board, "O")
+                checkwin(board, "X")        #checks if the user has won
+                checkwin(board, "O")        #checks if the bot has won
 
-            else:
+            else:                           #if the moves are greater than 3:
                 moves += 1
-                rowbot, colbot = botmove(board)
-                board[rowbot][colbot] = "O"
+                rowbot, colbot = botmove(board) #bot move
+                board[rowbot][colbot] = "O"     #place an "O" on the generated spot
                 print("\n THE BOT WILL MOVE: ")
                 board_print(board)
-                checkwin(board, "X")
-                checkwin(board, "O")
+                checkwin(board, "X")        #checks if the user has won
+                checkwin(board, "O")        #checks if the bot has won
                 print('''
     Now you will move.''')
                 moves += 1
                 moveuser(board)
                 board_print(board)
-                checkwin(board, "USER")
-                checkwin(board, "BOT")
+                checkwin(board, "USER")     #checks if the bot has won
+                checkwin(board, "BOT")      #checks if the bot has won
 
-        else:
+        else:                               #if there have been 9 moves and nobody has won, the game is a draw
             print("Game is a draw. ")
             sys.exit()
 
