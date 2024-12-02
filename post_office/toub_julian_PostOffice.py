@@ -1,205 +1,312 @@
 '''
-Name: toub_julian_PostOffice.py
-Description: This code simulates a post office. The user provides the office with 5 inputs: length, width, height,
-starting zip code, and the destination zip code. The purpose of the program is to calculate the cost of shipping
-the package. The distance shipped is calculated by assigning zone numbers to zip codes that are in certain areas and then 
-subtracting the destination's zone by the starting zone. Each package type has a corresponding initial cost and cost per zone. 
-The equation: price = intial cost + (cost per zone * distance between zones) is the formula for this program. 
-The program also provides a breakdown of the price and allows the user to export to excel. 
+Name: toub_julian_tictactoe.py
+Description: This code allows the user to play Tic Tac Toe against a robot. The robot will play 
+statistically smart moves at the beginning. After that, it randomly reacts to the user's moves.
 
 Bugs: none found
-Features: breaks down the cost formula, exports to excel 
-Sources: https://programming-24.mooc.fi/part-4/5-print-statement-formatting (used on line 164), 
-password_keeper.py (by Julian Toub)
+
+Features: bot plays intelligent first 2-3 moves.  
+
+Sources: https://www.geeksforgeeks.org/python-using-2d-arrays-lists-the-right-way/
+
 Log: 1
 '''
-from pathlib import Path
-import csv
-def get_postage_type(length, height, width):
-    '''
-    Determines the postage_type of package that the user would like to ship. 
+
+import random
+import sys
+import time
+def board_print(board):
+    """
+    Prints the board by iterating through the length of it (3x3).
 
     Args:
-        length (float): The length of one side of the package.
-        height (float): The height of the package.
-        width (float): The width or thickness of the package.
+        board(list): A list of the 3 rows.
 
     Returns:
-        postage_type (str): The postage_type of package.
+        Prints the board item by item.
 
     Raises:
         none
-    '''
-    if 3.5 <= length <= 4.25 and 3.5 <= height <= 6 and .007 <= width <= .016:
-        return 'reg_post_card'
-    elif 4.25 < length < 6 and 6 < height < 11 and .007 <= width <= .015:
-        return 'large_post_card'
-    elif 3.5 <= length <= 6.125 and 5 <= height <= 11.5 and .016 < width < .25:
-        return 'envelope'
-    elif 6.125 < length < 24 and 11 <= height <= 18 and .25 <= width <= .5:
-        return 'large_envelope'
-    elif length >= 24 and width >.5 and length + (height*2) + (width*2) <= 84:
-        return 'reg_package'
-    elif 84 < length + (length*2) + (width*2) < 130:
-        return 'large_package'
+    """
+    for row in range(len(board)):
+        for col in range(len(board[row])):
+            print(board[row][col], end=' ')
+        print()
 
-    else:
-        return 'unmailable'
-def get_zone(zip_code):
-    '''
-    Determines the zone that the package will start and end in based off of the zip code ranges. 
+def moveuser(board):
+    """
+    Promps the user for the row and colomn for their move. Checks that the move is valid and has not 
+    already been made. 
 
     Args:
-        zip_code (int): Either the starting or ending zip code of the shipment.
-    
+        board(list): A list of the 3 rows.
+
     Returns:
-        The zone number (int) that corresponds with the zip code. 
+        userchoice(strr): The selected box (1-9) for the user's move.
 
     Raises:
         none
-    '''
-    if 1 <= zip_code <= 6999:
-        return 1
-    elif 7000 <= zip_code <= 19999:
-        return 2
-    elif 20000 <= zip_code <= 35999:
-        return 3
-    elif 36000 <= zip_code <= 62999:
-        return 4
-    elif 63000 <= zip_code <= 84999:
-        return 5
-    elif 85000 <= zip_code <= 99999:
-        return 6
-    else:
-        return None
-def calculate_cost(postage_type, distance):
-    '''
-    Calculates the shipping cost for the package based on the type and distance. 
+    """
+    if board_full(board) == True:
+        print("The game is a draw, no more places to move. ")
+        sys.exit()
+    while True:
+        userchoice = input("Move: ")
+        if userchoice.isdigit() and int(userchoice) <= 9:
+            if int(userchoice) == 1 and str(board[0][0]) != "X" and str(board[0][0]) != "O":
+                board[0][0] = "X"
+                return userchoice
+            elif int(userchoice) == 2 and str(board[0][1]) != "X" and str(board[0][1]) != "O":
+                board[0][1] = "X"
+                return userchoice
+            elif int(userchoice) == 3 and str(board[0][2]) != "X" and str(board[0][2]) != "O":
+                board[0][2] = "X"
+                return userchoice
+            elif int(userchoice) == 4 and str(board[1][0]) != "X" and str(board[1][0]) != "O":
+                board[1][0] = "X"
+                return userchoice
+            elif int(userchoice) == 5 and str(board[1][1]) != "X" and str(board[1][1]) != "O":
+                board[1][1] = "X"
+                return userchoice
+            elif int(userchoice) == 6 and str(board[1][2]) != "X" and str(board[1][2]) != "O":
+                board[1][2] = "X"
+                return userchoice
+            elif int(userchoice) == 7 and str(board[2][0]) != "X" and str(board[2][0]) != "O":
+                board[2][0] = "X"
+                return userchoice
+            elif int(userchoice) == 8 and str(board[2][1]) != "X" and str(board[2][1]) != "O":
+                board[2][1] = "X"
+                return userchoice
+            elif int(userchoice) == 9 and str(board[2][2]) != "X" and str(board[2][2]) != "O":
+                board[2][2] = "X"
+                return userchoice
+        else:
+            print('''
+Make sure that you are not attempting to place your move on top of opponents move or your own move. 
+AND that your move is a number 1-9. \n''')
+
+def first_two_botmove(board):
+    """
+    Generates a random corner for the bot to move to. The valid options are any corners spots.
 
     Args:
-        postage_type (str): The type of package that is being shipped.
-        distance (int): The distance between the end and start zones. 
-    
+        board(list): A list of the 3 rows.
+
     Returns:
-        The cost to ship the package. 
+        move(any): The coordinates for the bot's move.
 
     Raises:
         none
-    '''
-    if postage_type == "reg_post_card":
-        return .20 + .03 * distance
-    elif postage_type == "large_post_card":
-        return .37 + .03 * distance
-    elif postage_type == "envelope":
-        return .37 + .04 * distance
-    elif postage_type == "large_envelope":
-        return .60 + .05 * distance
-    elif postage_type == "reg_package":
-        return 2.95 + .25 * distance
-    elif postage_type == "large_package":
-        return 3.95 + .35 * distance
-    else:
-        return 'unmailable'
+    """
+    rows = random.choice([0, 2])
+    cols = random.choice([0, 2])
+    move = board[rows][cols]    
+    while str(board[rows][cols]) == "X" or str(board[rows][cols]) == "O":
+        rows = random.choice([0, 2])
+        cols = random.choice([0, 2])
+        move = board[rows][cols]
+    board[rows][cols] = "O"  
+    return move
+
+def botmove(board):
+    """
+    Generates a random place for the bot to move to. 
+
+    Args:
+        board(list): A list of the 3 rows.
+
+    Returns:
+        rowbot(int): The generated row (0-2) for the bot's move.
+        colbot(int): The generated column (0-2) for the bot's move.
+
+    Raises:
+        none
+    """
+    if board_full(board) == True:
+        print("The game is a draw, no more places to move. ")
+        sys.exit()
+    while True:
+        rowbot = random.randint(0,2)
+        colbot = random.randint(0,2)
+        while str(board[rowbot][colbot]) == "X" or str(board[rowbot][colbot]) == "O":
+            rowbot = random.randint(0,2)
+            colbot = random.randint(0,2)
+        return rowbot, colbot
+def checkwin(board, player):
+    """
+    Checks if either the user or the bot has made a winning combination. 
+
+    Args:
+        board(list): A list of the 3 rows.
+        player(string): Either "X" or "O"
+
+    Returns:
+        none
+
+    Raises:
+        none
+    """
+    if board[0][0]== player and board[0][1]== player and board[0][2]== player:
+        print(f"GAME HAS BEEN WON BY {player} \n")
+        sys.exit()
+    elif board[1][0]== player and board[1][1]== player and board[1][2]== player:
+        print(f"GAME HAS BEEN WON BY {player} \n")
+        sys.exit()
+    elif board[2][0]== player and board[2][1]== player and board[2][2]== player:
+        print(f"GAME HAS BEEN WON BY {player} \n")
+        sys.exit()
+    elif board[0][0]== player and board[1][1]== player and board[2][2]== player:
+        print(f"GAME HAS BEEN WON BY {player} \n")
+        sys.exit()
+    elif board[2][0]== player and board[1][1]== player and board[0][2]== player:
+        print(f"GAME HAS BEEN WON BY {player} \n")
+        sys.exit()
+    elif board[0][0]== player and board[1][0]==player and board[2][0]== player:
+        print(f"GAME HAS BEEN WON BY {player} \n")
+        sys.exit()
+    elif board[0][1]== player and board[1][1]== player and board[2][1]==player:
+        print(f"GAME HAS BEEN WON BY {player} \n")
+        sys.exit()
+    elif board[0][2]== player and board[1][2]== player and board[2][2]== player:
+        print(f"GAME HAS BEEN WON BY {player} \n")
+        sys.exit()
+
+def board_full(board):
+    """
+    Checks if the board is completely filled.
+
+    Args:
+        board(list): A list of the 3 rows.
+
+    Returns:
+        True or false.
+
+    Raises:
+        none
+    """
+    for row in board:
+        for spot in row:
+            if spot not in ["X", "O"]:
+                return False
+    return True
 
 def main():
-    '''
-    Calculates the cost of shipping a package from a starting location to an ending location. 
-    The calculation is made by asking the user for dimensions (length, height, and width) and 
-    determining the type of package by the dimensions. Additionally, the distance shipped is
-    calculated by assigning zone numbers to zip codes that are in certain areas and then 
-    subtracting the destination's zone by the starting zone. Each package type has a 
-    corresponding initial cost and cost per zone. 
-    The equation: price = intial.cost + (cost per zone * distance between zones) is formula
-    for this program. The program also provides a breakdown of the price and allows the user to export to excel.  
     
-    Args:
-        none    
+    board = [[1,2,3],                       #defining the board as a 3 x 3 box, numbered 1-9. 
+         [4,5,6],
+         [7,8,9]]
 
-    Returns:
-        none
+    moves = 0                               #sets moves to 0
+    print('''
+User = X
+Bot = O''')                                 #prints the corresponding letter to the player. User = X, Bot = O
+    random_num = random.randint(1,2)        #generates a random number 1-2
+    
+    if random_num == 1:                     #if the random number is 1, the user will go first
+        while moves <= 8:     
+            if moves == 0:                  #if the moves are equal to 0, the board will print     
+                board_print(board)          #print the board
+            moves += 1                
+            moveuser(board)                 #user move
+            board_print(board)              #print the board
+            checkwin(board, "X")
+            checkwin(board, "O")
+            if moves <= 2:
+                moves += 1
+                first_two_botmove(board)    #function to go to a corner spot
+                print("\n NOW THE BOT WILL MOVE: ")
+                board_print(board)          #print the board
+            elif moves == 3 and str(board[1][1]) != "X":    #if it is the 3rd move and the middle spot is open, the bot will take that spot
+                moves += 1
+                board[1][1] = "O"           #places an "O" in the middle spot
+                print("\n NOW THE BOT WILL MOVE: ")
+                board_print(board)          #print the board
+                checkwin(board, "X")        #checks if the user has won
+                checkwin(board, "O")        #checks if the bot has won
+                print('''
+Now you will move.''')
+                moves += 1
+                moveuser(board)             #user move
+                board_print(board)          #print the board
+                checkwin(board, "X")        #checks if the user has won
+                checkwin(board, "O")        #checks if the bot has won
+                moves += 1
+                rowbot, colbot = botmove(board) #bot move
+                board[rowbot][colbot] = "O" #places an "O" on the generated spot
+                print("\n NOW THE BOT WILL MOVE: ")
+                time.sleep(1)               #one second pause
+                board_print(board)          #print the board
+                print()
+                checkwin(board, "X")        #checks if the user has won
+                checkwin(board, "O")        #checks if the bot has won
 
-    Raises:
-        ValueError: If any of the entries do not meet the requirements. 
-    '''
-    count = 0
-    while count < 5:
-        count += 1
-        try:
-            while True:
-                #splits the user's input into 5 data points
-                dimensions = input("Enter the data as 'Length, Height, Width, Starting Zip Code, Ending Zip Code:  ").split(",")  
-                if len(dimensions) == 5:                                                #checks to make sure that the user inputted 5 numbers
-                    length = float(dimensions[0])                                       #sets the variable 'lenght' = to the first user input
-                    height = float(dimensions[1])                                       #sets the variable 'height' = to the second user input                                      
-                    width = float(dimensions[2])                                        #sets the variable 'width' = to the third user input
-                    zip_start = int(dimensions[3])                                      #sets the variable 'zip_start' = to the fourth user input
-                    zip_end = int(dimensions[4])                                        #sets the variable 'zip_end' = to the fifth user input
-                    distance = abs(get_zone(zip_end) - get_zone(zip_start))             #calculates the distance in zones from the start to the end point
-                    types_of_packages = ['reg_post_card', 'large_post_card', 'envelope', 'large_envelope', 'reg_package', 'large_package'] #creates a list of all of the viable types of packages
-                    postage_type = get_postage_type(length, height, width)              #creates a variable called "postage_type" this will retrieve the returned type of package
-                    intial_package_costs = [.20, .37, .37, .60, 2.95, 3.95]             #creates a list of all of the inital costs per package type. This list is parrallel to the types_of_packages list
-                    cost_per_zone = [.03,.03,.04,.05,.25,.35]                           #creates a list of the price per zone per package type. This list is parrallel to the types_of_packages list
-                    break
-                else:
-                    #an error is pushed to the user if the split of the user's input returns 5 values. The user is then redirected to the begining of the loop
-                    print('''Error:
-There must be 5 numerical inputs separated by commas. For example: 4, 5, .01, 06830, 67840 will return $0.32.
-                            ''')
-            for i in range(0,len(types_of_packages)):
-                if types_of_packages[i] == postage_type:     
-                    initial_package = intial_package_costs[i]
-                    cost_travelled = cost_per_zone[i]
-            if length < 0:
-                print('Length cannot be negative.')                                     #checks to see if the input 'length' is negative. if it is, the loop will require that the data is re-entered
-            elif height < 0:
-                print('Height cannot be negative.')                                     #checks to see if the input 'height' is negative. if it is, the loop will require that the data is re-entered 
-            elif width < 0:
-                print('Width cannot be negative.')                                      #checks to see if the input 'width' is negative. if it is, the loop will require that the data is re-entered
-            else:                                                                       #if all variables check out (not negative), the code will proceed. 
-                postage_type = get_postage_type(length, height, width)
-                if postage_type == 'unmailable':
-                    print("Package is unmailable ")
-                total_cost = calculate_cost(postage_type, distance)
-                stripped_cost = str('%.2f'%total_cost).lstrip('0')
-                print(stripped_cost)
-                user_breakdown_cost = str.lower(input('Would you like me to breakdown the cost formula? '))
-                if 'y' in user_breakdown_cost:
-                    print(f'''
-                            Your package type is a(n) {postage_type}, and you are shipping it across {distance} shipping zones.
-                            The initial cost for a(n) {postage_type} is ${initial_package:.2f} and it costs ${cost_travelled:.2f} per zone
-                            ''')    
-                while True:
-                    user_export_excel = str.lower(input("Would you like to export the cost breakdown to excel? "))     
-                    if 'y' in user_export_excel:
-                        # Create lists for the values
-                        columns = {
-                            'Initial Cost': [initial_package],
-                            'Distance (in zones)': [distance],
-                            'Cost per zone': [cost_travelled],
-                            'Total Price': [total_cost]
-                        }
+            
+            else:                           #if the moves are greater than 3:
+                checkwin(board, "X")        #checks if the user has won
+                checkwin(board, "O")        #checks if the bot has won
+                moves += 1
+                rowbot, colbot = botmove(board) #bot move
+                board[rowbot][colbot] = "O" #places an "O" on the generated spot
+                print("\n NOW THE BOT WILL MOVE: ")
+                time.sleep(1)               #one second pause
+                board_print(board)          #print the board
+                print()
+                checkwin(board, "X")        #checks if the user has won
+                checkwin(board, "O")        #checks if the bot has won
 
-                        # Prepare the rows for CSV export
-                        rows = zip(columns['Initial Cost'], columns['Distance (in zones)'], columns['Cost per zone'], columns['Total Price'])
+        else:                               #if there have been 9 moves and nobody has won, the game is a draw
+            print("Game is a draw. ")
+            sys.exit()
+    else:                                   #if the number is not 1, the bot will go first
+        print('''
+Welcome to the Tic Tac Toe game! You will be playing against a robot. Randomly, the starter has been assigned as BOT.''')
+        time.sleep(1)
+        while moves <= 8:
+            if moves <= 2:
+                moves += 1
+                first_two_botmove(board)    #function to go to a corner spot
+                print("\n THE BOT WILL MOVE: ")
+                board_print(board)          #prints the board
+                print('''
+    Now you will move.''')
+                moves += 1
+                moveuser(board)             #user move
+                board_print(board)
+            elif moves == 3 and str(board[1][1]) != "X":    #if it is the 3rd move and the middle spot is open, the bot will take that spot
+                moves += 1
+                board[1][1] = "O"           #place an "O" in the middle
+                print("\n THE BOT WILL MOVE: ")
+                board_print(board)          #prints the board
+                checkwin(board, "X")        #checks if the user has won
+                checkwin(board, "O")        #checks if the bot has won
+                print('''
+Now you will move.''')
+                moves += 1        
+                moveuser(board)
+                board_print(board)
+                checkwin(board, "X")        #checks if the user has won
+                checkwin(board, "O")        #checks if the bot has won
 
-                        # Write to CSV
-                        with open('post_office.csv', 'w', newline='') as f:
-                            writer = csv.writer(f)
-                            writer.writerow(['Initial Cost', 'Distance (in zones)', 'Cost per zone', 'TOTAL PRICE = Initial Cost + (Distance * Cost per zone)'])
-                            writer.writerows(rows)
+            else:                           #if the moves are greater than 3:
+                moves += 1
+                rowbot, colbot = botmove(board) #bot move
+                board[rowbot][colbot] = "O"     #place an "O" on the generated spot
+                print("\n THE BOT WILL MOVE: ")
+                board_print(board)
+                checkwin(board, "X")        #checks if the user has won
+                checkwin(board, "O")        #checks if the bot has won
+                print('''
+    Now you will move.''')
+                moves += 1
+                moveuser(board)
+                board_print(board)
+                checkwin(board, "X")     #checks if the bot has won
+                checkwin(board, "O")      #checks if the bot has won
 
-                        folder = Path.cwd()
-                        print(f'''
-                        Data successfully stored in the same folder as the project.
-                        The folder is {folder} and the file name is "post_office"
-                        ''')
-                        break
-                    else:
-                        break
-                
-        except ValueError:
-            #if the user enteres a value that is not in the proper format, the error will be caught. 
-            "Please check all of your entries and make sure they correspond with the format."
-#Calls the main function
+        else:                               #if there have been 9 moves and nobody has won, the game is a draw
+            print("Game is a draw. ")
+            sys.exit()
+
+
 if __name__ == "__main__":
     main()
