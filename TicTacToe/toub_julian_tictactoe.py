@@ -80,6 +80,8 @@ def moveuser(board):
             elif int(userchoice) == 9 and str(board[2][2]) != "X" and str(board[2][2]) != "O":
                 board[2][2] = "X"
                 return userchoice
+            else:
+                print("Spot is taken. ")
         else:
             print('''
 Make sure that you are not attempting to place your move on top of opponents move or your own move. 
@@ -272,7 +274,7 @@ Welcome to the Tic Tac Toe game! You will be playing against a robot. Randomly, 
                 moves += 1
                 moveuser(board)             #user move
                 board_print(board)
-            elif moves == 3 and str(board[1][1]) != "X":    #if it is the 3rd move and the middle spot is open, the bot will take that spot
+            elif moves == 4 and str(board[1][1]) != "X":    #if it is the 3rd move and the middle spot is open, the bot will take that spot
                 moves += 1
                 board[1][1] = "O"           #place an "O" in the middle
                 print("\n THE BOT WILL MOVE: ")
