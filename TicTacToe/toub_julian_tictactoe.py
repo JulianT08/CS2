@@ -16,27 +16,44 @@ import random
 import sys
 import time
 def board_print(board):
+    """
+    Prints the board by iterating through the length of it (3x3).
+
+    Args:
+        board(list): A list of the 3 rows.
+
+    Returns:
+        Prints the board item by item.
+
+    Raises:
+        none
+    """
     for row in range(len(board)):
         for col in range(len(board[row])):
             print(board[row][col], end=' ')
         print()
-"""
-Prints the board by iterating through the length of it (3x3).
 
-Args:
-    board(list): A list of the 3 rows.
-
-Returns:
-    Prints the board item by item.
-
-Raises:
-    none
-"""
 def moveuser(board):
+    """
+    Promps the user for the row and colomn for their move. Checks that the move is valid and has not 
+    already been made. 
+
+    Args:
+        board(list): A list of the 3 rows.
+
+    Returns:
+        userchoice(strr): The selected box (1-9) for the user's move.
+
+    Raises:
+        none
+    """
+    if board_full(board) == True:
+        print("The game is a draw, no more places to move. ")
+        sys.exit()
     while True:
         userchoice = input("Move: ")
         if userchoice.isdigit() and int(userchoice) <= 9:
-            if int(userchoice) == 1 and str(board[0][0]) != "X" and str(board[[0][0]]) != "O":
+            if int(userchoice) == 1 and str(board[0][0]) != "X" and str(board[0][0]) != "O":
                 board[0][0] = "X"
                 return userchoice
             elif int(userchoice) == 2 and str(board[0][1]) != "X" and str(board[0][1]) != "O":
@@ -68,20 +85,19 @@ def moveuser(board):
 Make sure that you are not attempting to place your move on top of opponents move or your own move. 
 AND that your move is a number 1-9. \n''')
 
-"""
-Promps the user for the row and colomn for their move. Checks that the move is valid and has not 
-already been made. 
-
-Args:
-    board(list): A list of the 3 rows.
-
-Returns:
-    userchoice(strr): The selected box (1-9) for the user's move.
-
-Raises:
-    none
-"""
 def first_two_botmove(board):
+    """
+    Generates a random corner for the bot to move to. The valid options are any corners spots.
+
+    Args:
+        board(list): A list of the 3 rows.
+
+    Returns:
+        move(any): The coordinates for the bot's move.
+
+    Raises:
+        none
+    """
     rows = random.choice([0, 2])
     cols = random.choice([0, 2])
     move = board[rows][cols]    
@@ -91,20 +107,24 @@ def first_two_botmove(board):
         move = board[rows][cols]
     board[rows][cols] = "O"  
     return move
-"""
-Generates a random corner for the bot to move to. The valid options are any corners spots.
-
-Args:
-    board(list): A list of the 3 rows.
-
-Returns:
-    move(any): The coordinates for the bot's move.
-
-Raises:
-    none
-"""
 
 def botmove(board):
+    """
+    Generates a random place for the bot to move to. 
+
+    Args:
+        board(list): A list of the 3 rows.
+
+    Returns:
+        rowbot(int): The generated row (0-2) for the bot's move.
+        colbot(int): The generated column (0-2) for the bot's move.
+
+    Raises:
+        none
+    """
+    if board_full(board) == True:
+        print("The game is a draw, no more places to move. ")
+        sys.exit()
     while True:
         rowbot = random.randint(0,2)
         colbot = random.randint(0,2)
@@ -112,21 +132,20 @@ def botmove(board):
             rowbot = random.randint(0,2)
             colbot = random.randint(0,2)
         return rowbot, colbot
-"""
-Generates a random place for the bot to move to. 
-
-Args:
-    board(list): A list of the 3 rows.
-
-Returns:
-    rowbot(int): The generated row (0-2) for the bot's move.
-    colbot(int): The generated column (0-2) for the bot's move.
-
-Raises:
-    none
-"""
-
 def checkwin(board, player):
+    """
+    Checks if either the user or the bot has made a winning combination. 
+
+    Args:
+        board(list): A list of the 3 rows.
+        player(string): Either "X" or "O"
+
+    Returns:
+        none
+
+    Raises:
+        none
+    """
     if board[0][0]== player and board[0][1]== player and board[0][2]== player:
         print(f"GAME HAS BEEN WON BY {player} \n")
         sys.exit()
@@ -151,19 +170,25 @@ def checkwin(board, player):
     elif board[0][2]== player and board[1][2]== player and board[2][2]== player:
         print(f"GAME HAS BEEN WON BY {player} \n")
         sys.exit()
-"""
-Checks if either the user or the bot has made a winning combination. 
 
-Args:
-    board(list): A list of the 3 rows.
-    player(string): Either "X" or "O"
+def board_full(board):
+    """
+    Checks if the board is completely filled.
 
-Returns:
-    none
+    Args:
+        board(list): A list of the 3 rows.
 
-Raises:
-    none
-"""
+    Returns:
+        True or false.
+
+    Raises:
+        none
+    """
+    for row in board:
+        for spot in row:
+            if spot not in ["X", "O"]:
+                return False
+    return True
 
 def main():
     
@@ -275,8 +300,8 @@ Now you will move.''')
                 moves += 1
                 moveuser(board)
                 board_print(board)
-                checkwin(board, "USER")     #checks if the bot has won
-                checkwin(board, "BOT")      #checks if the bot has won
+                checkwin(board, "X")     #checks if the bot has won
+                checkwin(board, "O")      #checks if the bot has won
 
         else:                               #if there have been 9 moves and nobody has won, the game is a draw
             print("Game is a draw. ")
