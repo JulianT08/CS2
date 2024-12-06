@@ -156,7 +156,7 @@ def check_guess(guess, word, new_list, tries):
             new_list[i] = guess
         else:
             tries -= 1/len(word)
-    return (" ".join(new_list)), tries
+    return (" ".join(new_list)), int(tries)
 
 def main():
     tries = 6 #the user gets 6 initial attempts
@@ -167,11 +167,11 @@ def main():
     while tries > 0:
         #show_diagram(tries, word, guess, new_list)
         guess = get_guess(guess)
-        check_guess(guess, word, new_list, tries) #not sure if this one is necessary
+        new_list, tries = check_guess(guess, word, new_list, tries)
         show_diagram(tries, word, guess, new_list)
 
 if __name__ == "__main__":
     main()
 
-## LEFT OFF: currently i am trying to subtract one from tries, it is not working.
-## It keeps setting tries back to 6. 
+## LEFT OFF: subtracting it works now but we have to make sure that the show diagram is printing.
+## It keeps not printing it after checking if the letter is in. 
