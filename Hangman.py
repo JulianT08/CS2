@@ -155,7 +155,7 @@ def check_guess(guess, word, new_list, tries):
         if split_word[i] == guess:
             new_list[i] = guess
         else:
-            tries -= 1/3
+            tries -= 1/len(word)
     return (" ".join(new_list)), tries
 
 def main():
@@ -167,6 +167,7 @@ def main():
     while tries > 0:
         #show_diagram(tries, word, guess, new_list)
         guess = get_guess(guess)
+        check_guess(guess, word, new_list, tries) #not sure if this one is necessary
         show_diagram(tries, word, guess, new_list)
 
 if __name__ == "__main__":
