@@ -4,12 +4,13 @@ Name: toub_julian_hangman
 
 Log: 1
 '''
-tries = 6
-word = str.lower("Dog")
-def show_diagram(tries):
 
+def show_diagram(tries, word):
     if tries == 6:
-        diagram = '''
+        diagram = f'''
+
+    The word is {blanks(word)}
+        
             ________
             |       |
             |       |
@@ -24,7 +25,10 @@ def show_diagram(tries):
 '''
         print(diagram)
     elif tries == 5:
-        diagram = '''
+        diagram = f'''
+
+    The word is {blanks(word)}
+
             ________
             |       |
             |       |
@@ -39,7 +43,10 @@ def show_diagram(tries):
 '''
         print(diagram)
     elif tries == 4:
-        diagram = '''
+        diagram = f'''
+
+    The word is {blanks(word)}
+
             ________
             |       |
             |       |
@@ -54,7 +61,10 @@ def show_diagram(tries):
 '''       
         print(diagram)
     elif tries == 3:
-        diagram = '''
+        diagram = f'''
+
+    The word is {blanks(word)}
+
             ________
             |       |
             |       |
@@ -69,7 +79,10 @@ def show_diagram(tries):
 '''        
         print(diagram)
     elif tries == 2:
-        diagram = '''
+        diagram = f'''
+
+    The word is {blanks(word)}
+
             ________
             |       |
             |       |
@@ -84,7 +97,10 @@ def show_diagram(tries):
 '''       
         print(diagram)
     elif tries == 1:
-        diagram = '''
+        diagram = f'''
+
+    The word is {blanks(word)}
+
             ________
             |       |
             |       |
@@ -99,8 +115,11 @@ def show_diagram(tries):
 '''          
         print(diagram)
     elif tries == 0:
-        diagram = '''
-            ________
+        diagram = f'''
+
+    The word is {blanks(word)}
+  
+             ________
             |       |
             |       |
             0       |
@@ -121,25 +140,33 @@ def get_guess(guess):
             return guess
         else:
             print("Guess must be a letter. (e.g. a b c ) ")
-def check_guess(guess):
-    split_word = list(word)
-    for letter in split_word:
-        if letter == guess:
-            word_list = ['']
-            word_list.append(letter)
-            print(word_list)
+def blanks(word):
+    word_list = str("_ ")*len(word)
     return word_list
 
 
-
-
-
-
+def check_guess(guess, word):
+    split_word = list(word)
+    #for letter in split_word:
+        #if letter == guess:
+            #new_list = blanks(word).replace("_ ", guess)
+            #print(new_list)
+    new_list = blanks(word)
+    for i in split_word:
+        if split_word[i] == guess:
+            new_list[i] = guess
+            print(new_list)
+    #return word_list
 
 
 def main():
-    guess = get_guess()
-    check_guess(guess)
+    tries = 6 #the user gets 6 initial attempts
+    word = str.lower("Dog")
+    show_diagram(tries, word)
+    guess = ""
+    guess = get_guess(guess)
+    check_guess(guess, word)
+    show_diagram(tries, word)
 
 if __name__ == "__main__":
     main()
