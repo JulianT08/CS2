@@ -7,6 +7,7 @@ Log: 1
 tries = 6
 word = str.lower("Dog")
 def show_diagram(tries):
+
     if tries == 6:
         diagram = '''
             ________
