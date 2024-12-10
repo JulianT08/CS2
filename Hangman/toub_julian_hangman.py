@@ -4,7 +4,7 @@ Name: toub_julian_hangman
 
 Log: 1
 '''
-import sys
+import random
 import tkinter as tk
 
 def show_diagram(tries, new_list, guessed):
@@ -215,14 +215,15 @@ def display_scoreboard(user_score, bot_score):
 def main():
     user_score = 0
     bot_score = 0
-    word_list = []
+    with open('1-1000.txt', 'r') as f:
+        words = f.read().split('\n')
     while True:
         play = str.lower(input("Would you like to play? (yes / no): "))
         won = False
         lost = False
         if 'y' in play:
             tries = 6  # the user gets 6 initial attempts
-            word = str.lower("sister")
+            word = str.lower(random.choice(words))
             new_list = list(blanks(word))
             guess = ""
             guessed = [""]
