@@ -169,25 +169,25 @@ There must be 5 numerical inputs separated by commas. For example: 4, 5, .01, 06
                             The initial cost for a(n) {postage_type} is ${initial_package:.2f} and it costs ${cost_travelled:.2f} per zone
                             ''')    
                 while True:
-                    user_export_excel = str.lower(input("Would you like to export the cost breakdown to excel? "))     
+                    user_export_excel = str.lower(input("Would you like to export the cost breakdown to excel? "))     #asks if the user would like to export to excel
                     if 'y' in user_export_excel:
-                        # Create lists for the values
+                        #create lists for the values
                         columns = {
                             'Initial Cost': [initial_package],
                             'Distance (in zones)': [distance],
                             'Cost per zone': [cost_travelled],
                             'Total Price': [total_cost]
-                        }
+                        } #sets up the columns in excel for the values to go under. 
 
-                        # Prepare the rows for CSV export
+                        #prepare the rows for CSV export
                         rows = zip(columns['Initial Cost'], columns['Distance (in zones)'], columns['Cost per zone'], columns['Total Price'])
 
-                        # Write to CSV
+                        #write to CSV
                         with open('post_office.csv', 'w', newline='') as f:
                             writer = csv.writer(f)
                             writer.writerow(['Initial Cost', 'Distance (in zones)', 'Cost per zone', 'TOTAL PRICE = Initial Cost + (Distance * Cost per zone)'])
                             writer.writerows(rows)
-
+                        #finds the folder where it is held and then prints the folder for the user's ease of access
                         folder = Path.cwd()
                         print(f'''
                         Data successfully stored in the same folder as the project.
