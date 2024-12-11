@@ -69,7 +69,7 @@ def show_diagram(tries, new_list, guessed):
         diagram = f'''
 
     The word is {new_list}
-    You have {tries} tries left. 
+    You have {tries} tries left.                            You have guessed: {guessed}
     
             ________
             |       |
@@ -88,7 +88,7 @@ def show_diagram(tries, new_list, guessed):
         diagram = f'''
 
     The word is {new_list}
-    You have {tries} tries left. 
+    You have {tries} tries left.                            You have guessed: {guessed}
     
             ________
             |       |
@@ -107,7 +107,7 @@ def show_diagram(tries, new_list, guessed):
         diagram = f'''
 
     The word is {new_list}
-    You have {tries} tries left. 
+    You have {tries} tries left.                            You have guessed: {guessed}
     
             ________
             |       |
@@ -126,7 +126,7 @@ def show_diagram(tries, new_list, guessed):
         diagram = f'''
 
     The word is {new_list}
-    You have {tries} tries left. 
+    You have {tries} tries left.                            You have guessed: {guessed}
       
              ________
             |       |
@@ -171,7 +171,7 @@ def check_guess(guess, word, new_list, tries):
             tries -= 1/len(word)
     return (" ".join(new_list)), int(tries)
 
-def checkwin(tries, new_list, user_score, bot_score, won, lost):
+def checkwin(tries, new_list, user_score, bot_score, won, lost, word):
     if tries > 0 and "_" not in new_list:
         print("Game is over, you win!")
         user_score += 1
@@ -179,7 +179,7 @@ def checkwin(tries, new_list, user_score, bot_score, won, lost):
         lost = False
         return user_score, bot_score, won, lost
     elif tries == 0:
-        print("Game is over you lose. ")
+        print(f"Game is over you lose.The word was {word}")
         bot_score += 1
         won = True
         lost = False
@@ -195,10 +195,10 @@ def guess_word(guessed_word, word, won, lost, user_score, bot_score):
         lost = False
         return user_score, won, lost
     else:
-        print("Game is over you lose. ")
+        print(f"Game is over you lose. The word was {word}")
         bot_score += 1
-        won = True
-        lost = False
+        won = False
+        lost = True
         return bot_score, won, lost
 
 def display_scoreboard(user_score, bot_score):
@@ -229,11 +229,11 @@ def main():
             guessed = [""]
             guessed_word = ""
 
-            while tries >= 0 and won == False:
+            while tries >= 0 and won == False and lost == False:
                 guess, guessed = get_guess(guess, guessed)
                 new_list, tries = check_guess(guess, word, new_list, tries)
                 show_diagram(tries, new_list, guessed)
-                user_score, bot_score, won, lost = checkwin(tries, new_list, user_score, bot_score, won, lost)
+                user_score, bot_score, won, lost = checkwin(tries, new_list, user_score, bot_score, won, lost, word)
                 display_scoreboard(user_score, bot_score)
                 want_to_guess = str.lower(input("Would you like to guess the word? You will lose if you guess wrong. "))
                 if "y" in want_to_guess:
@@ -247,7 +247,9 @@ def main():
 
 if __name__ == "__main__":
     main()
-
+# I left off: make it print the hangman when the game starts. Make sure it asks right 
+# away if the user wants to play again after a win or loss instead of asking if they want to type the word. Also make the type the word prompt: 
+# "type "word" to type the word. smth like that
 '''
 def hangman():
     tries = 6  # the user gets 6 initial attempts
