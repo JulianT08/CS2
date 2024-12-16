@@ -1,0 +1,15 @@
+Documenting Format
+
+For a function:
+    '''
+    Definition here. 
+
+    Args:
+        vairable(type): Description of variable.
+    
+    Returns:
+        variable(type): Description of variable.  
+
+    Raises:
+        ValueError? 
+    '''
