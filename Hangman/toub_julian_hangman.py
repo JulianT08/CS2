@@ -353,38 +353,38 @@ def display_scoreboard(user_score, bot_score):
 ''')
 
 def main():
-    user_score = 0
-    bot_score = 0
+    user_score = 0 # starts the game with 0 points for the user
+    bot_score = 0 # starts the game with 0 points for the bot
     with open('1-1000.txt', 'r') as f:
-        words = f.read().split('\n')
+        words = f.read().split('\n') # reads in the text file for the most common 1000 words and sets "words" = to the words in the file
     while True:
-        play = str.lower(input("Would you like to play? (yes / no): "))
-        won = False
-        lost = False
+        play = str.lower(input("Would you like to play? (yes / no): ")) # asks the user if they want to play
+        won = False # sets the status of "won" to false
+        lost = False # sets the status of "lost" to false
         if 'y' in play:
             tries = 7  # the user gets 7 initial attempts
-            word = str.lower(random.choice(words))
-            new_list = list(blanks(word))
-            guess = ""
+            word = str.lower(random.choice(words)) # picks a random word from the list "words" sets that = to "word"
+            new_list = list(blanks(word)) # creates the blanks list
+            guess = "" 
             guessed = [""]
             guessed_word = ""
-            show_diagram(tries, new_list, guessed, word)
+            show_diagram(tries, new_list, guessed, word) # shows the hangman picture
 
-            while tries >= 0 and won == False and lost == False:
-                guess, guessed = get_guess(guess, guessed, guessed_word, word, won, lost, user_score, bot_score)
-                checkwin(tries, new_list, user_score, bot_score, won, lost, word)
-                if won == False and lost == False:
+            while tries >= 0 and won == False and lost == False: # while the user still has tries and they havent won or lost:
+                guess, guessed = get_guess(guess, guessed, guessed_word, word, won, lost, user_score, bot_score) 
+                checkwin(tries, new_list, user_score, bot_score, won, lost, word) # checks for a win or loss
+                if won == False and lost == False: # if the user hasn't won or lost:
                     new_list, tries = check_guess(guess, word, new_list, tries)
-                    show_diagram(tries, new_list, guessed, word)
+                    show_diagram(tries, new_list, guessed, word) # shows the hangman picture
                     user_score, bot_score, won, lost = checkwin(tries, new_list, user_score, bot_score, won, lost, word)
-                    display_scoreboard(user_score, bot_score)
+                    display_scoreboard(user_score, bot_score) # show the scoreboard
 
 
         elif 'n' in play:
-            print("Thanks for playing!")
+            print("Ok, bye!") # if the user doesn't want to play, say bye
             break
         else:
-            print("Invalid input. Please enter 'yes' or 'no'.")
+            print("Invalid input. Please enter 'yes' or 'no'.") # if the user didn't input a 'y' or 'n' give them an error
 
 if __name__ == "__main__":
     main()
