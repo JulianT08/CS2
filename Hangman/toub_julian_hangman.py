@@ -25,8 +25,8 @@ def show_diagram(tries, new_list, guessed, word):
     if tries == 7:
         diagram = f'''
 
-    The word is {len(word)*"_ "}. 
-    You have {tries} tries left.                            
+    The word is {new_list}
+    You have {tries} tries left.                            You have guessed: {guessed}
         
             ________
             |       |
