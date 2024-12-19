@@ -6,7 +6,7 @@ Log: 1
 '''
 import random
 
-def show_diagram(tries, new_list, guessed, word):
+def show_diagram(tries, new_list, guessed, word, count):
     '''
     Prints the hangman structure depending on how many tries left. Prints the guessed list. 
 
@@ -22,7 +22,26 @@ def show_diagram(tries, new_list, guessed, word):
     Raises:
         none 
     '''
-    if tries == 7:
+    if count == 0:
+        diagram = f'''
+    The word is {len(word)*"_ "}
+    You have {tries} tries.    
+        
+            ________
+            |       |
+            |       |
+                    |
+                    |
+                    |
+                    |
+                    |
+                    |
+        =====================
+
+'''
+        print(diagram)
+        
+    if tries == 7 and count != 0:
         diagram = f'''
 
     The word is {new_list}
@@ -255,6 +274,7 @@ def check_guess(guess, word, new_list, tries):
             while ' ' in new_list:
                 new_list.remove(' ')
             tries -= 1/len(word)
+    tries = round(tries)
     return (" ".join(new_list)), int(tries)
 
 def checkwin(tries, new_list, user_score, bot_score, won, lost, word):
@@ -368,14 +388,16 @@ def main():
             guess = "" 
             guessed = [""]
             guessed_word = ""
-            show_diagram(tries, new_list, guessed, word) # shows the hangman picture
+            count = 0
+            show_diagram(tries, new_list, guessed, word, count) # shows the hangman picture
 
             while tries >= 0 and won == False and lost == False: # while the user still has tries and they havent won or lost:
                 guess, guessed = get_guess(guess, guessed, guessed_word, word, won, lost, user_score, bot_score) 
                 checkwin(tries, new_list, user_score, bot_score, won, lost, word) # checks for a win or loss
                 if won == False and lost == False: # if the user hasn't won or lost:
                     new_list, tries = check_guess(guess, word, new_list, tries)
-                    show_diagram(tries, new_list, guessed, word) # shows the hangman picture
+                    count += 1
+                    show_diagram(tries, new_list, guessed, word, count) # shows the hangman picture
                     user_score, bot_score, won, lost = checkwin(tries, new_list, user_score, bot_score, won, lost, word)
                     display_scoreboard(user_score, bot_score) # show the scoreboard
 
