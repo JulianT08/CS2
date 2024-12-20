@@ -5,6 +5,7 @@ Name: toub_julian_hangman
 Log: 1
 '''
 import random
+import os 
 
 def show_diagram(tries, new_list, guessed, word, count):
     '''
@@ -224,8 +225,8 @@ def get_guess(guess, guessed, guessed_word, word, won, lost, user_score, bot_sco
                 guessed.remove("")
             return guess, guessed
         elif guess == "word":
-            guess_word(guessed_word, word, won, lost, user_score, bot_score)
-            return guess, guessed
+            user_score, bot_score, won, lost = guess_word(guessed_word, word, won, lost, user_score, bot_score)
+            return user_score, bot_score, won, lost
             
         else:
             print("Guess must be a single letter without any spaces. (e.g. 'a' or 'b' or 'c') ")
@@ -340,13 +341,13 @@ def guess_word(guessed_word, word, won, lost, user_score, bot_score):
         user_score += 1
         won = True
         lost = False
-        return user_score, won, lost
+        return user_score, bot_score, won, lost
     else:
         print(f"Game is over you lose. The word was '{word}'")
         bot_score += 1
         won = False
         lost = True
-        return bot_score, won, lost
+        return user_score, bot_score, won, lost
 
 def display_scoreboard(user_score, bot_score):
     '''
@@ -379,11 +380,17 @@ def main():
         words = f.read().split('\n') # reads in the text file for the most common 1000 words and sets "words" = to the words in the file
     while True:
         play = str.lower(input("Would you like to play? (yes / no): ")) # asks the user if they want to play
+        pick_word = str.lower(input("Click enter for a randomized word... click any letter to pick your own word: ")) # asks the user if they want to pick their own word
+
         won = False # sets the status of "won" to false
         lost = False # sets the status of "lost" to false
         if 'y' in play:
             tries = 7  # the user gets 7 initial attempts
-            word = str.lower(random.choice(words)) # picks a random word from the list "words" sets that = to "word"
+            if pick_word.isalpha():
+                word = str.lower(input("Enter your word: ")) # asks the user for the word
+                os.system('cls')
+            else:
+                word = str.lower(random.choice(words)) # picks a random word from the list "words" sets that = to "word"
             new_list = list(blanks(word)) # creates the blanks list
             guess = "" 
             guessed = [""]
@@ -392,7 +399,7 @@ def main():
             show_diagram(tries, new_list, guessed, word, count) # shows the hangman picture
 
             while tries >= 0 and won == False and lost == False: # while the user still has tries and they havent won or lost:
-                guess, guessed = get_guess(guess, guessed, guessed_word, word, won, lost, user_score, bot_score) 
+                guess, guessed, won, lost = get_guess(guess, guessed, guessed_word, word, won, lost, user_score, bot_score) 
                 checkwin(tries, new_list, user_score, bot_score, won, lost, word) # checks for a win or loss
                 if won == False and lost == False: # if the user hasn't won or lost:
                     new_list, tries = check_guess(guess, word, new_list, tries)
