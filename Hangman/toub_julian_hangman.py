@@ -223,7 +223,7 @@ def get_guess(guess, guessed, guessed_word, word, won, lost, user_score, bot_sco
             guessed.append(guess)
             while "" in guessed:
                 guessed.remove("")
-            return guess, guessed
+            return guess, guessed, won, lost
         elif guess == "word":
             user_score, bot_score, won, lost = guess_word(guessed_word, word, won, lost, user_score, bot_score)
             return user_score, bot_score, won, lost
