@@ -2,7 +2,7 @@
 Name: toub_julian_hangman
 
 
-Log: 1
+Log: 1.1
 '''
 import random
 import os 
@@ -219,11 +219,13 @@ def get_guess(guess, guessed, guessed_word, word, won, lost, user_score, bot_sco
     '''
     while True:
         guess = str.lower(input("Enter your guess or type 'word' to guess the word: "))
-        if guess.isalpha() and len(guess) == 1:
+        if guess.isalpha() and len(guess) == 1 and guess not in guessed:
             guessed.append(guess)
             while "" in guessed:
                 guessed.remove("")
             return guess, guessed, won, lost
+        elif guess in guessed:
+            print("You have already guessed this letter. ")
         elif guess == "word":
             user_score, bot_score, won, lost = guess_word(guessed_word, word, won, lost, user_score, bot_score)
             return user_score, bot_score, won, lost
