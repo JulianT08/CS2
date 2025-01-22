@@ -1,8 +1,15 @@
 '''
 Name: toub_julian_hangman
 
+Description: A simple hangman game where the user can guess letters or the word in its entirety.
 
-Log: 1.1
+Features: Visual hangman diagram, user vs bot scoreboard, and a word list of the most common 1000 words.
+
+Sources: none
+
+Bugs: none
+
+Log: 1.2
 '''
 import random
 import os 
@@ -378,8 +385,8 @@ def display_scoreboard(user_score, bot_score):
 def main():
     user_score = 0 # starts the game with 0 points for the user
     bot_score = 0 # starts the game with 0 points for the bot
-    with open('1-1000.txt', 'r') as f:
-        words = f.read().split('\n') # reads in the text file for the most common 1000 words and sets "words" = to the words in the file
+    with open('words_to_use_new.txt', 'r') as f:
+        words = f.read().split('\n') # reads in the text file for the  words and sets "words" = to the words in the file
     while True:
         play = str.lower(input("Would you like to play? (yes / no): ")) # asks the user if they want to play
         pick_word = str.lower(input("Click enter for a randomized word... click any letter to pick your own word: ")) # asks the user if they want to pick their own word
