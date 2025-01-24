@@ -16,12 +16,18 @@ def is_string(word):
     return True
         
 def pick_action(word):
+    '''
+    
+    
+    
+    '''
     print('''
 1. Reverse word
 2. Determine number of vowels
 3. Determine number of consonants   
 4. Return first name
-5. Check if a word is alpha (True/False)
+5. Return last name
+6. Check if a word is alpha (True/False)
 19. Exit
 20. Enter new word
           ''')
@@ -35,7 +41,10 @@ def pick_action(word):
     elif action == 4:
         print(first_name(word))
     elif action == 5:
+        print(last_name(word))
+    elif action == 6:
         print(is_string(word))
+
     elif action == 19:
         sys.exit()
     elif action == 20:
@@ -46,12 +55,12 @@ def reverse_string(word):
     Reverses a string. 
 
     Args:
-        none.
+        word(str): The universal word.
     Returns:
         new_word(list): Reversed string
 
     Raises:
-        ValueError: If the input is not a string. 
+        ValueError: If the input is not a string
     '''
     while True:
         try:
@@ -68,12 +77,12 @@ def count_vowels(word):
     Counts the vowels. 
 
     Args:
-        none.
+        word(str): The universal word.
     Returns:
         count(list): The nuber of vowels in the string
 
     Raises:
-        ValueError: If the input is not a string. 
+        ValueError: If the input is not a string
     '''
     while True:
         try:
@@ -92,12 +101,12 @@ def count_consonants(word):
     Counts the consonants. 
 
     Args:
-        none.
+        word(str): The universal word.
     Returns:
         count(list): The nuber of consonants in the string
 
     Raises:
-        ValueError: If the input is not a string. 
+        ValueError: If the input is not a string 
     '''
     while True:
         try:
@@ -116,7 +125,7 @@ def first_name(word):
     Returns the first name. 
 
     Args:
-        none.
+        word(str): The universal word.
     Returns:
         first_name(str): The first name
 
@@ -130,6 +139,29 @@ def first_name(word):
                 break
             else:
                 first_name.append(word[i])
+        return("".join(first_name))
+def last_name(word):
+    '''
+    Returns the last name. 
+
+    Args:
+        word(str): The universal word.
+    Returns:
+        last_name(str): The last name.
+
+    Raises:
+        none 
+    '''
+    while True:
+        last_name = list(word)
+        for i in range(len(last_name)):
+            if last_name[i] == " ":
+                break
+            last_name[i].remove ### THIS IS NOT WORKING FIX THIS. IM TRYING TO REMOVE EVERYTHING BEFORE THE SPACE
+        print(last_name)
+
+            #else:
+                #first_name.append(word[i])
         return("".join(first_name))
 
 
