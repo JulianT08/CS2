@@ -8,26 +8,40 @@ Log: 1.0
 
 '''
 import sys
-def pick_action():
+def is_string(word):
+    letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+    for letter in word:
+        if letter not in letters:
+            return False
+    return True
+        
+def pick_action(word):
     print('''
-1. Reverse String
+1. Reverse word
 2. Determine number of vowels
 3. Determine number of consonants   
 4. Return first name
+5. Check if a word is alpha (True/False)
 19. Exit
+20. Enter new word
           ''')
     action = int(input("Enter the number of the action you want to perform: "))
     if action == 1:
-        print(reverse_string())
+        print(reverse_string(word))
     elif action == 2:
-        print(count_vowels())
+        print(count_vowels(word))
     elif action == 3:
-        print(count_consonants())
+        print(count_consonants(word))
     elif action == 4:
-        print(first_name())
+        print(first_name(word))
+    elif action == 5:
+        print(is_string(word))
     elif action == 19:
         sys.exit()
-def reverse_string():
+    elif action == 20:
+        word = str(input("Enter a word: "))
+        return word     
+def reverse_string(word):
     '''
     Reverses a string. 
 
@@ -41,17 +55,15 @@ def reverse_string():
     '''
     while True:
         try:
-            word = input("Enter a word: ")
-            if not word.isalpha():
+            if is_string(word) == False:
                 raise ValueError("Input must be a string containing only letters.")
             new_word = []
             for i in range(len(word)):
                 new_word.insert(0, word[i])
-            print("".join(new_word))
-            break
+            return("".join(new_word))
         except ValueError as e:
             print(e)
-def count_vowels():
+def count_vowels(word):
     '''
     Counts the vowels. 
 
@@ -65,8 +77,7 @@ def count_vowels():
     '''
     while True:
         try:
-            word = input("Enter a word: ")
-            if not word.isalpha():
+            if is_string(word) == False:
                 raise ValueError("Input must be a string containing only letters.")
             vowels = "aeiouAEIOU"
             count = 0
@@ -76,7 +87,7 @@ def count_vowels():
             return(count)
         except ValueError as e:
             print(e)
-def count_consonants():
+def count_consonants(word):
     '''
     Counts the consonants. 
 
@@ -90,8 +101,7 @@ def count_consonants():
     '''
     while True:
         try:
-            word = input("Enter a word: ")
-            if not word.isalpha():
+            if is_string(word) == False:
                 raise ValueError("Input must be a string containing only letters.")
             vowels = "aeiouAEIOU"
             count = 0
@@ -101,7 +111,7 @@ def count_consonants():
             return(count)
         except ValueError as e:
             print(e)
-def first_name():
+def first_name(word):
     '''
     Returns the first name. 
 
@@ -114,7 +124,6 @@ def first_name():
         none 
     '''
     while True:
-        word = input("Enter your name: ")
         first_name = []
         for i in range(len(word)):
             if word[i] == " ":
@@ -125,7 +134,9 @@ def first_name():
 
 
 def main():
-    pick_action()
-    sys.exit()
+    word = str(input("Enter a word: "))
+    while True:
+        word = pick_action(word)
 if __name__ == "__main__":
     main()
+
