@@ -8,18 +8,16 @@ Log: 1.0
 
 '''
 import sys
+
 def is_string(word):
-    letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-    for letter in word:
-        if letter not in letters:
+    letters = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ")
+    for i in word:
+        if i not in letters:
             return False
     return True
         
 def pick_action(word):
     '''
-    
-    
-    
     '''
     print('''
 1. Reverse word
@@ -31,25 +29,29 @@ def pick_action(word):
 19. Exit
 20. Enter new word
           ''')
-    action = int(input("Enter the number of the action you want to perform: "))
+    action = ""
+    options = '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'
+    while action not in options:
+        action = input("Enter the number of the action you want to perform (1-20): ")
+    action = int(action)
     if action == 1:
-        print(reverse_string(word))
+        print(reverse_string(word)[0])
     elif action == 2:
-        print(count_vowels(word))
+        print(count_vowels(word)[0])
     elif action == 3:
-        print(count_consonants(word))
+        print(count_consonants(word)[0])
     elif action == 4:
-        print(first_name(word))
+        print(first_name(word)[0])
     elif action == 5:
-        print(last_name(word))
+        print(last_name(word)[0])
     elif action == 6:
         print(is_string(word))
-
     elif action == 19:
         sys.exit()
     elif action == 20:
         word = str(input("Enter a word: "))
-        return word     
+    return word
+
 def reverse_string(word):
     '''
     Reverses a string. 
@@ -64,14 +66,15 @@ def reverse_string(word):
     '''
     while True:
         try:
-            if is_string(word) == False:
+            if not is_string(word):
                 raise ValueError("Input must be a string containing only letters.")
             new_word = []
             for i in range(len(word)):
                 new_word.insert(0, word[i])
-            return("".join(new_word))
+            return ("".join(new_word)), word
         except ValueError as e:
             print(e)
+
 def count_vowels(word):
     '''
     Counts the vowels. 
@@ -79,23 +82,24 @@ def count_vowels(word):
     Args:
         word(str): The universal word.
     Returns:
-        count(list): The nuber of vowels in the string
+        count(list): The number of vowels in the string
 
     Raises:
         ValueError: If the input is not a string
     '''
     while True:
         try:
-            if is_string(word) == False:
+            if not is_string(word):
                 raise ValueError("Input must be a string containing only letters.")
             vowels = "aeiouAEIOU"
             count = 0
             for char in word:
                 if char in vowels:
                     count += 1
-            return(count)
+            return count, word
         except ValueError as e:
             print(e)
+
 def count_consonants(word):
     '''
     Counts the consonants. 
@@ -103,23 +107,24 @@ def count_consonants(word):
     Args:
         word(str): The universal word.
     Returns:
-        count(list): The nuber of consonants in the string
+        count(list): The number of consonants in the string
 
     Raises:
         ValueError: If the input is not a string 
     '''
     while True:
         try:
-            if is_string(word) == False:
+            if not is_string(word):
                 raise ValueError("Input must be a string containing only letters.")
             vowels = "aeiouAEIOU"
             count = 0
             for char in word:
                 if char not in vowels:
                     count += 1
-            return(count)
+            return count, word
         except ValueError as e:
             print(e)
+
 def first_name(word):
     '''
     Returns the first name. 
@@ -139,7 +144,8 @@ def first_name(word):
                 break
             else:
                 first_name.append(word[i])
-        return("".join(first_name))
+        return "".join(first_name), word
+
 def last_name(word):
     '''
     Returns the last name. 
@@ -152,23 +158,14 @@ def last_name(word):
     Raises:
         none 
     '''
-    while True:
-        last_name = list(word)
-        for i in range(len(last_name)):
-            if last_name[i] == " ":
-                break
-            last_name[i].remove ### THIS IS NOT WORKING FIX THIS. IM TRYING TO REMOVE EVERYTHING BEFORE THE SPACE
-        print(last_name)
-
-            #else:
-                #first_name.append(word[i])
-        return("".join(first_name))
-
+    name = word.split()
+    last_name = name[-1]
+    return "".join(last_name), word
 
 def main():
     word = str(input("Enter a word: "))
     while True:
         word = pick_action(word)
+
 if __name__ == "__main__":
     main()
-
