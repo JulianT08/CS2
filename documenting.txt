@@ -11,5 +11,5 @@ For a function:
         variable(type): Description of variable.  
 
     Raises:
-        ValueError? 
+        Error: Description of the error 
     '''
