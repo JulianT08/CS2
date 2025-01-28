@@ -10,7 +10,7 @@ Log: 1.0
 import sys
 
 def is_string(word):
-    letters = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ")
+    letters = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ- ")
     for i in word:
         if i not in letters:
             return False
@@ -36,6 +36,7 @@ def pick_action(word):
 4. Return first name
 5. Return last name
 6. Return middle name (if there is one)
+7. Check for hyphenated last name
 18. Check if a word is valid, as in made up of letters (True/False)
 19. Exit
 20. Enter new word
@@ -58,6 +59,8 @@ def pick_action(word):
         print(last_name(word)[0])
     elif action == 6:
         print(middle_name(word, first_name, last_name)[0])
+    elif action == 7:
+        print(contains_hyphen(last_name))
     elif action == 18:
         print(is_string(word))
     elif action == 19:
@@ -251,7 +254,10 @@ def last_name(word):
         none 
     '''
     name = word.split()
-    last_name = name[-1]
+    if len(name) > 1:
+        last_name = name[-1]
+    else:
+        last_name = word
     return "".join(last_name), word
 
 def middle_name(word, first_name, last_name):
@@ -278,6 +284,12 @@ def middle_name(word, first_name, last_name):
             broken_word.remove(last_name)
     middle_name = " ".join(broken_word)
     return middle_name, word
+
+def contains_hyphen(word):
+    if '-' in last_name(word)[0]:
+        return True
+    else:
+        return False
 
 def main():
     word = str(input("Enter a word: "))
