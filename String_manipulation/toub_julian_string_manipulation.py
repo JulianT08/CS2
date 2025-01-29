@@ -8,7 +8,7 @@ Log: 1.0
 
 '''
 import sys
-
+import random
 def is_string(word):
     letters = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ- ")
     for i in word:
@@ -16,7 +16,7 @@ def is_string(word):
             return False
     return True
         
-def pick_action(word):
+def pick_action(word, lastname):
     '''
     Acts as a menu for the user to pick the function or enter a new word. 
 
@@ -37,6 +37,9 @@ def pick_action(word):
 5. Return last name
 6. Return middle name (if there is one)
 7. Check for hyphenated last name
+8. Print lowercase version of word
+9. Print uppercase version of word
+10. Shuffle the letters of the word
 18. Check if a word is valid, as in made up of letters (True/False)
 19. Exit
 20. Enter new word
@@ -60,7 +63,13 @@ def pick_action(word):
     elif action == 6:
         print(middle_name(word, first_name, last_name)[0])
     elif action == 7:
-        print(contains_hyphen(last_name))
+        print(contains_hyphen(lastname))
+    elif action == 8:
+        print(make_lower(word)[0])
+    elif action == 9:
+        print(make_upper(word)[0])
+    elif action == 10:
+        print(mix_up(word)[0])
     elif action == 18:
         print(is_string(word))
     elif action == 19:
@@ -226,6 +235,7 @@ def first_name(word):
 
     Args:
         word(str): The universal word.
+
     Returns:
         first_name(str): The first name.
 
@@ -247,6 +257,7 @@ def last_name(word):
 
     Args:
         word(str): The universal word.
+
     Returns:
         last_name(str): The last name.
 
@@ -285,16 +296,88 @@ def middle_name(word, first_name, last_name):
     middle_name = " ".join(broken_word)
     return middle_name, word
 
-def contains_hyphen(word):
-    if '-' in last_name(word)[0]:
+def contains_hyphen(lastname):
+    if '-' in lastname:
         return True
     else:
         return False
 
+def make_lower(word):
+    '''
+    Prints the lowercase version of the word. 
+
+    Args:
+        word(str): The universal word.
+
+    Returns:
+        lower_word(str): The word in lowercase.
+        word(str): The universal word.
+
+    Raises:
+        none 
+    '''    
+    lower_word = []
+    for i in range(len(word)):
+        letter = ord(word[i])
+        if letter >= 65 and letter <= 90:
+            lower_word.append(chr(letter + 32))
+        else:
+            lower_word.append(chr(letter))
+    return "".join(lower_word), word
+
+def make_upper(word):
+    '''
+    Prints the uppercase version of the word. 
+
+    Args:
+        word(str): The universal word.
+
+    Returns:
+        upper_case(str): The word in lowercase.
+        word(str): The universal word.
+
+    Raises:
+        none 
+    '''    
+    upper_word = []
+    for i in range(len(word)):
+        letter = ord(word[i])
+        if letter >= 97 and letter <= 122:
+            upper_word.append(chr(letter - 32))
+        else:
+            upper_word.append(chr(letter))
+    return "".join(upper_word), word
+
+def mix_up(word):
+    '''
+    Mixes up the word. 
+
+    Args:
+        word(str): The universal word.
+
+    Returns:
+        mixed_word(str): The mixed up word.
+        word(str): The universal word.
+        
+    Raises:
+        none 
+    '''    
+    word = list(word)
+    mixed_word = []
+    for i in range(len(word)):
+        letter = random.choice(word)
+        mixed_word.append(letter)
+        word.remove(letter)
+    return "".join(mixed_word), word
+
 def main():
     word = str(input("Enter a word: "))
+    firstname = first_name(word)[0] # Not used, but available
+    lastname = last_name(word)[0] # Derrive last name from word
     while True:
-        word = pick_action(word)
+        word = pick_action(word, lastname)
+        lastname = last_name(word)[0] # Update last name
+
 
 if __name__ == "__main__":
     main()
