@@ -16,7 +16,7 @@ def is_string(word):
             return False
     return True
         
-def pick_action(word, lastname):
+def pick_action(word, firstname, lastname, middlename):
     '''
     Acts as a menu for the user to pick the function or enter a new word. 
 
@@ -31,16 +31,18 @@ def pick_action(word, lastname):
     '''
     print('''
 1. Reverse word
-2. Determine number of vowels
-3. Determine number of consonants   
-4. Return first name
-5. Return last name
-6. Return middle name (if there is one)
+2. Print number of vowels
+3. Print number of consonants   
+4. Print first name
+5. Print last name
+6. Print middle name (if there is one)
 7. Check for hyphenated last name
 8. Print lowercase version of word
 9. Print uppercase version of word
 10. Shuffle the letters of the word
-18. Check if a word is valid, as in made up of letters (True/False)
+11. Check if the word is a palindrome 
+12. Print initials
+18. Check if a word is valid, as in made up of letters 
 19. Exit
 20. Enter new word
           ''')
@@ -70,6 +72,10 @@ def pick_action(word, lastname):
         print(make_upper(word)[0])
     elif action == 10:
         print(mix_up(word)[0])
+    elif action == 11:
+        print(palindrome(word))
+    elif action == 12:
+        print(initials(word, firstname, lastname, middlename)[0])
     elif action == 18:
         print(is_string(word))
     elif action == 19:
@@ -283,16 +289,12 @@ def middle_name(word, first_name, last_name):
     Raises:
         none 
     '''
+
     broken_word = word.split()
-    first_name = [first_name(word)[0]]
-    first_name = "".join(first_name)
-    last_name = [last_name(word)[0]]
-    last_name = "".join(last_name)
-    for word in broken_word:
-        if str(word) == first_name:
-            broken_word.remove(first_name)
-        elif str(word) == last_name:
-            broken_word.remove(last_name)
+    if first_name(word)[0] in broken_word:
+        broken_word.remove(first_name(word)[0])
+    if last_name(word)[0] in broken_word:
+        broken_word.remove(last_name(word)[0])
     middle_name = " ".join(broken_word)
     return middle_name, word
 
@@ -368,14 +370,28 @@ def mix_up(word):
         letter = random.choice(word)
         mixed_word.append(letter)
         word.remove(letter)
-    return "".join(mixed_word), word
+    "".join(mixed_word), word
+
+def palindrome(word):
+    lower_word = make_lower(word)[0]
+    reversed_word = reverse_string(lower_word)[0]
+    return reversed_word == lower_word
+
+def initials(word, firstname, lastname, middle_name):
+    initial1 = list(firstname)[0]
+    initial2 = list(lastname)[0]
+    initials = (make_upper(initial1)[0], make_upper(initial2)[0])
+    return ("".join(initials)), word
+
+
 
 def main():
     word = str(input("Enter a word: "))
     firstname = first_name(word)[0] # Not used, but available
     lastname = last_name(word)[0] # Derrive last name from word
+    middlename = middle_name(word, first_name, last_name)[0]
     while True:
-        word = pick_action(word, lastname)
+        word = pick_action(word, firstname, lastname, middlename)
         lastname = last_name(word)[0] # Update last name
 
 
