@@ -3,14 +3,15 @@ toub_julian_string_manipulation.py
 
 Description: This module contains functions to manipulate strings. 
 
-Log: 1.0
+Features: many
 
+Log: 1.0
 
 '''
 import sys
 import random
 def is_string(word):
-    letters = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ- ")
+    letters = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-. ")
     for i in word:
         if i not in letters:
             return False
@@ -42,6 +43,7 @@ def pick_action(word, firstname, lastname, middlename):
 10. Shuffle the letters of the word
 11. Check if the word is a palindrome 
 12. Print initials
+13. Sort alphabetically
 18. Check if a word is valid, as in made up of letters 
 19. Exit
 20. Enter new word
@@ -75,7 +77,9 @@ def pick_action(word, firstname, lastname, middlename):
     elif action == 11:
         print(palindrome(word))
     elif action == 12:
-        print(initials(word, firstname, lastname, middlename)[0])
+        print(initials(word)[0])
+    elif action == 13:
+        print(sort_word(word)[0])
     elif action == 18:
         print(is_string(word))
     elif action == 19:
@@ -90,8 +94,10 @@ def reverse_string(word):
 
     Args:
         word(str): The universal word.
+
     Returns:
         new_word(list): Reversed string.
+        word(str): The universal word. 
 
     Raises:
         ValueError: If the input is not a string.
@@ -244,6 +250,7 @@ def first_name(word):
 
     Returns:
         first_name(str): The first name.
+        word(str): The universal word. 
 
     Raises:
         none 
@@ -266,6 +273,7 @@ def last_name(word):
 
     Returns:
         last_name(str): The last name.
+        word(str): The universal word. 
 
     Raises:
         none 
@@ -283,13 +291,14 @@ def middle_name(word, first_name, last_name):
 
     Args:
         word(str): The universal word.
+
     Returns:
         middle_name(str): The middle name(s).
+        word(str): The universal word. 
 
     Raises:
         none 
     '''
-
     broken_word = word.split()
     if first_name(word)[0] in broken_word:
         broken_word.remove(first_name(word)[0])
@@ -299,6 +308,18 @@ def middle_name(word, first_name, last_name):
     return middle_name, word
 
 def contains_hyphen(lastname):
+    '''
+    Checks if the last name contains a hyphen.
+
+    Args:
+        lastname(str): The last name.
+
+    Returns:
+        bool: True if the last name contains a hyphen, False otherwise.
+
+    Raises:
+        none 
+    '''
     if '-' in lastname:
         return True
     else:
@@ -373,17 +394,47 @@ def mix_up(word):
     "".join(mixed_word), word
 
 def palindrome(word):
+    '''
+    Checks if the given word is a palindrome.
+
+    Args:
+        word(str): The universal word.
+
+    Returns:
+        bool: True if the word is a palindrome, False otherwise.
+
+    Raises:
+        none 
+    '''    
     lower_word = make_lower(word)[0]
     reversed_word = reverse_string(lower_word)[0]
     return reversed_word == lower_word
 
-def initials(word, firstname, lastname, middle_name):
-    initial1 = list(firstname)[0]
-    initial2 = list(lastname)[0]
-    initials = (make_upper(initial1)[0], make_upper(initial2)[0])
-    return ("".join(initials)), word
+def initials(word):
+    '''
+    Returns the initials of every word. 
+    
+    Args:
+        word(str): The universal word.
 
+    Returns:
+        initial(str): The initials.
+        word(str): The universal word. 
 
+    Raises:
+        none 
+    '''
+    initials = []
+    broken_word = word.split()
+    for i in broken_word:
+        initials.append(i[0])
+    initials = make_upper("".join(initials))[0]
+    return initials, word
+
+def sort_word(word):
+    broken_word = list(word)
+    broken_word.sort()
+    return "".join(broken_word)
 
 def main():
     word = str(input("Enter a word: "))
