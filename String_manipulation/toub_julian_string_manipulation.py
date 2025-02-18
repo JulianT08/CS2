@@ -43,7 +43,7 @@ def pick_action(word, firstname, lastname, middlename):
 10. Shuffle the letters of the word
 11. Check if the word is a palindrome 
 12. Print initials
-13. Sort alphabetically
+13. Sort the string alphabetically
 18. Check if a word is valid, as in made up of letters 
 19. Exit
 20. Enter new word
@@ -53,40 +53,46 @@ def pick_action(word, firstname, lastname, middlename):
     while action not in options:
         action = input("Enter the number of the action you want to perform (1-20): ")
     action = int(action)
-    if action == 1:
-        print(reverse_string(word)[0])
-    elif action == 2:
-        print(f"Number of Vowels: {count_vowels(word)[0]}  |  A: {count_vowels(word)[1]},   E: {count_vowels(word)[2]},   I: {count_vowels(word)[3]},   O: {count_vowels(word)[4]},   U: {count_vowels(word)[5]} ")
-    elif action == 3:
-        consonants_count = count_consonants(word)
-        print(f"Number of Consonants: {consonants_count[0]}  |  B: {consonants_count[1]},   C: {consonants_count[2]},   D: {consonants_count[3]},   F: {consonants_count[4]},   G: {consonants_count[5]},   H: {consonants_count[6]},   J: {consonants_count[7]},   K: {consonants_count[8]},   L: {consonants_count[9]},   M: {consonants_count[10]},   N: {consonants_count[11]},   P: {consonants_count[12]},   Q: {consonants_count[13]},   R: {consonants_count[14]},   S: {consonants_count[15]},   T: {consonants_count[16]},   V: {consonants_count[17]},   W: {consonants_count[18]},   X: {consonants_count[19]},   Y: {consonants_count[20]},   Z: {consonants_count[21]}")
-    elif action == 4:
-        print(first_name(word)[0])
-    elif action == 5:
-        print(last_name(word)[0])
-    elif action == 6:
-        print(middle_name(word, first_name, last_name)[0])
-    elif action == 7:
-        print(contains_hyphen(lastname))
-    elif action == 8:
-        print(make_lower(word)[0])
-    elif action == 9:
-        print(make_upper(word)[0])
-    elif action == 10:
-        print(mix_up(word)[0])
-    elif action == 11:
-        print(palindrome(word))
-    elif action == 12:
-        print(initials(word)[0])
-    elif action == 13:
-        print(sort_word(word)[0])
-    elif action == 18:
-        print(is_string(word))
-    elif action == 19:
-        sys.exit()
-    elif action == 20:
-        word = str(input("Enter a word: "))
-    return word
+    while True:
+        if is_string(word) == True:
+            if action == 1:
+                print(reverse_string(word)[0])
+            elif action == 2:
+                print(f"Number of Vowels: {count_vowels(word)[0]}  |  A: {count_vowels(word)[1]},   E: {count_vowels(word)[2]},   I: {count_vowels(word)[3]},   O: {count_vowels(word)[4]},   U: {count_vowels(word)[5]} ")
+            elif action == 3:
+                consonants_count = count_consonants(word)
+                print(f"Number of Consonants: {consonants_count[0]}  |  B: {consonants_count[1]},   C: {consonants_count[2]},   D: {consonants_count[3]},   F: {consonants_count[4]},   G: {consonants_count[5]},   H: {consonants_count[6]},   J: {consonants_count[7]},   K: {consonants_count[8]},   L: {consonants_count[9]},   M: {consonants_count[10]},   N: {consonants_count[11]},   P: {consonants_count[12]},   Q: {consonants_count[13]},   R: {consonants_count[14]},   S: {consonants_count[15]},   T: {consonants_count[16]},   V: {consonants_count[17]},   W: {consonants_count[18]},   X: {consonants_count[19]},   Y: {consonants_count[20]},   Z: {consonants_count[21]}")
+            elif action == 4:
+                print(first_name(word)[0])
+            elif action == 5:
+                print(last_name(word)[0])
+            elif action == 6:
+                print(middle_name(word, first_name, last_name)[0])
+            elif action == 7:
+                print(contains_hyphen(lastname))
+            elif action == 8:
+                print(make_lower(word)[0])
+            elif action == 9:
+                print(make_upper(word)[0])
+            elif action == 10:
+                print(mix_up(word)[0])
+            elif action == 11:
+                print(palindrome(word))
+            elif action == 12:
+                print(initials(word)[0])
+            elif action == 13:
+                print(sort_word(word))
+            elif action == 18:
+                print(is_string(word))
+            elif action == 19:
+                sys.exit()
+            elif action == 20:
+                word = str(input("Enter a word or name: "))
+            return word
+        else:
+            print("Must be a word.")
+            word = str(input("Enter a word: "))
+
 
 def reverse_string(word):
     '''
@@ -302,8 +308,8 @@ def middle_name(word, first_name, last_name):
     broken_word = word.split()
     if first_name(word)[0] in broken_word:
         broken_word.remove(first_name(word)[0])
-    if last_name(word)[0] in broken_word:
-        broken_word.remove(last_name(word)[0])
+        if last_name(word)[0] in broken_word:
+            broken_word.remove(last_name(word)[0])
     middle_name = " ".join(broken_word)
     return middle_name, word
 
@@ -391,7 +397,7 @@ def mix_up(word):
         letter = random.choice(word)
         mixed_word.append(letter)
         word.remove(letter)
-    "".join(mixed_word), word
+    return "".join(mixed_word), word
 
 def palindrome(word):
     '''
@@ -425,25 +431,40 @@ def initials(word):
         none 
     '''
     initials = []
-    broken_word = word.split()
-    for i in broken_word:
-        initials.append(i[0])
+    for word in word.split(" "):     
+        initials.append(word[0])
     initials = make_upper("".join(initials))[0]
     return initials, word
 
 def sort_word(word):
+    '''
+    Sorts the word alphabetically. 
+    
+    Args:
+        word(str): The universal word.
+
+    Returns:
+        broken_word: The sorted word.
+
+    Raises:
+        none 
+    '''
     broken_word = list(word)
     broken_word.sort()
-    return "".join(broken_word)
+    sorted_word = "".join(broken_word)
+    return sorted_word
+
 
 def main():
     word = str(input("Enter a word: "))
-    firstname = first_name(word)[0] # Not used, but available
-    lastname = last_name(word)[0] # Derrive last name from word
+    firstname = first_name(word)[0]
+    lastname = last_name(word)[0]
     middlename = middle_name(word, first_name, last_name)[0]
     while True:
-        word = pick_action(word, firstname, lastname, middlename)
-        lastname = last_name(word)[0] # Update last name
+        word = pick_action(word, firstname, lastname, middlename) # Asks for the word/name and then the action
+        firstname = first_name(word)[0] # Updates first name
+        middlename = middle_name(word, first_name, last_name)[0] # Updates middle name
+        lastname = last_name(word)[0] # Updates last name
 
 
 if __name__ == "__main__":
