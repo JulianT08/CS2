@@ -3,7 +3,7 @@ toub_julian_string_manipulation.py
 
 Description: This module contains functions to manipulate strings. 
 
-Features: many
+Features: 
 
 Log: 1.0
 
@@ -17,7 +17,7 @@ def is_string(word):
             return False
     return True
         
-def pick_action(word, firstname, lastname, middlename):
+def pick_action(word, firstname, lastname, middlename, encrypted):
     '''
     Acts as a menu for the user to pick the function or enter a new word. 
 
@@ -31,20 +31,24 @@ def pick_action(word, firstname, lastname, middlename):
         none 
     '''
     print('''
-1. Reverse word
-2. Print number of vowels
-3. Print number of consonants   
-4. Print first name
-5. Print last name
-6. Print middle name (if there is one)
-7. Check for hyphenated last name
-8. Print lowercase version of word
-9. Print uppercase version of word
-10. Shuffle the letters of the word
-11. Check if the word is a palindrome 
-12. Print initials
-13. Sort the string alphabetically
-18. Check if a word is valid, as in made up of letters 
+1. Remove title/distinction        [ex. "Dr.", "Dr", "Sir", "Esq", "Ph.D"]
+2. Reverse word
+3. Print number of vowels
+4. Print number of consonants   
+5. Print first name
+6. Print last name
+7. Print middle name (if there is one)
+8. Check for hyphenated last name
+9. Print lowercase version of word
+10. Print uppercase version of word
+11. Shuffle the letters of the word
+12. Check if the word is a palindrome 
+13. Print initials
+14. Sort the string alphabetically
+15. Check for title/distinction    [ex. "Dr.", "Dr", "Sir", "Esq", "Ph.D"]
+16. Check if a word is valid, as in made up of letters 
+17. Encrypt word or message
+18. Decrypt word or message
 19. Exit
 20. Enter new word
           ''')
@@ -53,37 +57,50 @@ def pick_action(word, firstname, lastname, middlename):
     while action not in options:
         action = input("Enter the number of the action you want to perform (1-20): ")
     action = int(action)
+    decrypt = False
     while True:
         if is_string(word) == True:
             if action == 1:
-                print(reverse_string(word)[0])
+                word = remove_distinction(word)
             elif action == 2:
-                print(f"Number of Vowels: {count_vowels(word)[0]}  |  A: {count_vowels(word)[1]},   E: {count_vowels(word)[2]},   I: {count_vowels(word)[3]},   O: {count_vowels(word)[4]},   U: {count_vowels(word)[5]} ")
+                print(reverse_string(word)[0])
             elif action == 3:
-                consonants_count = count_consonants(word)
-                print(f"Number of Consonants: {consonants_count[0]}  |  B: {consonants_count[1]},   C: {consonants_count[2]},   D: {consonants_count[3]},   F: {consonants_count[4]},   G: {consonants_count[5]},   H: {consonants_count[6]},   J: {consonants_count[7]},   K: {consonants_count[8]},   L: {consonants_count[9]},   M: {consonants_count[10]},   N: {consonants_count[11]},   P: {consonants_count[12]},   Q: {consonants_count[13]},   R: {consonants_count[14]},   S: {consonants_count[15]},   T: {consonants_count[16]},   V: {consonants_count[17]},   W: {consonants_count[18]},   X: {consonants_count[19]},   Y: {consonants_count[20]},   Z: {consonants_count[21]}")
+                print(f"Number of Vowels: {count_vowels(word)[0]}  |  A: {count_vowels(word)[1]},   E: {count_vowels(word)[2]},   I: {count_vowels(word)[3]},   O: {count_vowels(word)[4]},   U: {count_vowels(word)[5]} ")
             elif action == 4:
-                print(first_name(word)[0])
+                consonants_count = count_consonants(word)
+                print(f"Number of Consonants: {consonants_count[0] > 0, }  |  B: {consonants_count[1]},   C: {consonants_count[2]},   D: {consonants_count[3]},   F: {consonants_count[4]},   G: {consonants_count[5]},   H: {consonants_count[6]},   J: {consonants_count[7]},   K: {consonants_count[8]},   L: {consonants_count[9]},   M: {consonants_count[10]},   N: {consonants_count[11]},   P: {consonants_count[12]},   Q: {consonants_count[13]},   R: {consonants_count[14]},   S: {consonants_count[15]},   T: {consonants_count[16]},   V: {consonants_count[17]},   W: {consonants_count[18]},   X: {consonants_count[19]},   Y: {consonants_count[20]},   Z: {consonants_count[21]}")
             elif action == 5:
-                print(last_name(word)[0])
+                print(first_name(word)[0])
             elif action == 6:
-                print(middle_name(word, first_name, last_name)[0])
+                print(last_name(word)[0])
             elif action == 7:
-                print(contains_hyphen(lastname))
+                print(middle_name(word, first_name, last_name)[0])
             elif action == 8:
-                print(make_lower(word)[0])
+                print(contains_hyphen(lastname))
             elif action == 9:
-                print(make_upper(word)[0])
+                print(make_lower(word)[0])
             elif action == 10:
-                print(mix_up(word)[0])
+                print(make_upper(word)[0])
             elif action == 11:
-                print(palindrome(word))
+                print(mix_up(word)[0])
             elif action == 12:
-                print(initials(word)[0])
+                print(palindrome(word))
             elif action == 13:
+                print(initials(word)[0])
+            elif action == 14:
                 print(sort_word(word))
-            elif action == 18:
+            elif action == 15:
+                print(check_distinction(word))
+            elif action == 16:
                 print(is_string(word))
+            elif action == 17:
+                print(encrypt_word(word))
+                encrypted = encrypt_word(word)
+                decrypt = True
+            elif action == 18 and decrypt == True:
+                print(decrypt_word(encrypted))
+            elif action == 18 and decrypt == False:
+                print("Must encrypt message before decrypting. ")
             elif action == 19:
                 sys.exit()
             elif action == 20:
@@ -393,7 +410,7 @@ def mix_up(word):
     '''    
     word = list(word)
     mixed_word = []
-    for i in range(len(word)):
+    for letter in range(len(word)):
         letter = random.choice(word)
         mixed_word.append(letter)
         word.remove(letter)
@@ -454,14 +471,55 @@ def sort_word(word):
     sorted_word = "".join(broken_word)
     return sorted_word
 
+def check_distinction(word):
+    if "Dr." or "Dr" or "Sir" or "Esq" or "Ph.D" in word.split():
+        return True
+    else:
+        return False
+
+def remove_distinction(word):
+    distinctions = ["Dr.", "Dr", "Sir", "Esq", "Ph.D"]
+    words = word.split()
+    result = []
+    for i in words:
+        if i not in distinctions:
+            result.append(i)
+    return " ".join(result)
+
+def encrypt_word(word):
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    symbols = ['1','0','2','9','3','8','4','7','6','!',"/","?","|","[","{","]","}","+","=","$","<",">","@","%","^","-"]
+    word = make_lower(word)[0]
+    encrypted = ""
+    for char in word:
+        if char in letters:
+            index = letters.index(char)
+            encrypted += symbols[index]
+        else:
+            encrypted += char
+    return encrypted
+
+def decrypt_word(encrypted):
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    symbols = ['1','0','2','9','3','8','4','7','6','!',"/","?","|","[","{","]","}","+","=","$","<",">","@","%","^","-"]
+    decrypted = ""
+    for char in encrypted:
+        if char in symbols:
+            index = symbols.index(char)
+            decrypted += letters[index]
+        else:
+            decrypted += char
+    return decrypted
 
 def main():
     word = str(input("Enter a word: "))
     firstname = first_name(word)[0]
     lastname = last_name(word)[0]
     middlename = middle_name(word, first_name, last_name)[0]
+    encrypted = encrypt_word(word)
+
     while True:
-        word = pick_action(word, firstname, lastname, middlename) # Asks for the word/name and then the action
+        word = pick_action(word, firstname, lastname, middlename, encrypted) # Asks for the word/name and then the action
         firstname = first_name(word)[0] # Updates first name
         middlename = middle_name(word, first_name, last_name)[0] # Updates middle name
         lastname = last_name(word)[0] # Updates last name
