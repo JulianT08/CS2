@@ -4,12 +4,24 @@ toub_julian_string_manipulation.py
 Description: This module contains functions to manipulate strings. 
 
 Features: 
+- Menu to pick between functions
+- Checks if the word is valid, as in made up of letters only.
+- Allows the user to continuously run the program until exited.
+- Sorts vowels and prints their respective frequencies. 
+- Sorts consonants and prints their respecitve frequencies. 
+- Sorts the full name alphabetically.
+- Checks for title/distinction.
+- Removes title/distintion.
+- Encrypts a message.
+- Decrypts a message.
 
 Log: 1.0
 
 '''
 import sys
 import random
+decrypt = False
+
 def is_string(word):
     letters = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-. ")
     for i in word:
@@ -17,7 +29,7 @@ def is_string(word):
             return False
     return True
         
-def pick_action(word, firstname, lastname, middlename, encrypted):
+def pick_action(word, firstname, lastname, middlename, decrypt, encrypted):
     '''
     Acts as a menu for the user to pick the function or enter a new word. 
 
@@ -48,16 +60,15 @@ def pick_action(word, firstname, lastname, middlename, encrypted):
 15. Check for title/distinction    [ex. "Dr.", "Dr", "Sir", "Esq", "Ph.D"]
 16. Check if a word is valid, as in made up of letters 
 17. Encrypt word or message
-18. Decrypt word or message
-19. Exit
-20. Enter new word
+18. Decrypt word or message (must encrypt first)
+19. Enter new word/name
+20. Exit
           ''')
     action = ""
     options = '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'
     while action not in options:
         action = input("Enter the number of the action you want to perform (1-20): ")
     action = int(action)
-    decrypt = False
     while True:
         if is_string(word) == True:
             if action == 1:
@@ -102,10 +113,10 @@ def pick_action(word, firstname, lastname, middlename, encrypted):
             elif action == 18 and decrypt == False:
                 print("Must encrypt message before decrypting. ")
             elif action == 19:
-                sys.exit()
-            elif action == 20:
                 word = str(input("Enter a word or name: "))
-            return word
+            elif action == 20:
+                sys.exit()
+            return word, decrypt
         else:
             print("Must be a word.")
             word = str(input("Enter a word: "))
@@ -513,13 +524,14 @@ def decrypt_word(encrypted):
 
 def main():
     word = str(input("Enter a word: "))
+    decrypt = False
     firstname = first_name(word)[0]
     lastname = last_name(word)[0]
     middlename = middle_name(word, first_name, last_name)[0]
     encrypted = encrypt_word(word)
 
     while True:
-        word = pick_action(word, firstname, lastname, middlename, encrypted) # Asks for the word/name and then the action
+        word, decrypt = pick_action(word, firstname, lastname, middlename, decrypt, encrypted) # Asks for the word/name and then the action
         firstname = first_name(word)[0] # Updates first name
         middlename = middle_name(word, first_name, last_name)[0] # Updates middle name
         lastname = last_name(word)[0] # Updates last name

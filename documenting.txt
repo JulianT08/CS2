@@ -9,6 +9,7 @@ Features: Features go here.
 
 Log: 1.0
 
+Bugs: Bugs go here
 '''
 
 For a function:
