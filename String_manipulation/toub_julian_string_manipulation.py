@@ -23,6 +23,18 @@ import random
 decrypt = False
 
 def is_string(word):
+    '''
+    Checks if the input word is a valid string containing only letters, hyphens, and spaces.
+
+    Args:
+        word(str): The input word to be checked.
+    
+    Returns:
+        bool: True if the word is valid, False otherwise.
+
+    Raises:
+        none
+    '''
     letters = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-. ")
     for i in word:
         if i not in letters:
@@ -483,6 +495,18 @@ def sort_word(word):
     return sorted_word
 
 def check_distinction(word):
+    '''
+    Checks for a distinction: "Dr." or "Dr" or "Sir" or "Esq" or "Ph.D"
+
+    Args:
+        vairable(type): Description of variable.
+    
+    Returns:
+        variable(type): Description of variable.  
+
+    Raises:
+        Error: Description of the error 
+    '''
     if "Dr." or "Dr" or "Sir" or "Esq" or "Ph.D" in word.split():
         return True
     else:
