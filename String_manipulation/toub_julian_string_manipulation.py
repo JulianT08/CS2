@@ -499,20 +499,32 @@ def check_distinction(word):
     Checks for a distinction: "Dr." or "Dr" or "Sir" or "Esq" or "Ph.D"
 
     Args:
-        vairable(type): Description of variable.
+        word(str): The universal word.
     
     Returns:
-        variable(type): Description of variable.  
+        bool: True if there is a distinction, False if not.  
 
     Raises:
-        Error: Description of the error 
+        none 
     '''
-    if "Dr." or "Dr" or "Sir" or "Esq" or "Ph.D" in word.split():
+    if any(distinction in word.split() for distinction in ["Dr.", "Dr", "Sir", "Esq", "Ph.D"]):
         return True
     else:
         return False
 
 def remove_distinction(word):
+    '''
+    Removes the distinction: "Dr." or "Dr" or "Sir" or "Esq" or "Ph.D"
+
+    Args:
+        word(str): The universal word.
+    
+    Returns:
+        result(str): The word without the distinction.  
+
+    Raises:
+        none 
+    '''
     distinctions = ["Dr.", "Dr", "Sir", "Esq", "Ph.D"]
     words = word.split()
     result = []
@@ -522,6 +534,18 @@ def remove_distinction(word):
     return " ".join(result)
 
 def encrypt_word(word):
+    '''
+    Encrypts the word.
+
+    Args:
+        word(str): The universal word.
+    
+    Returns:
+        encrypted(str): The encrypted word.  
+
+    Raises:
+        none 
+    '''
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     symbols = ['1','0','2','9','3','8','4','7','6','!',"/","?","|","[","{","]","}","+","=","$","<",">","@","%","^","-"]
     word = make_lower(word)[0]
@@ -535,6 +559,19 @@ def encrypt_word(word):
     return encrypted
 
 def decrypt_word(encrypted):
+    '''
+    Decrypts the encrypted word.
+
+    Args:
+        encrypted(str): The encrypted word.
+    
+    Returns:
+        decrypted(str): The decrypted word, AKA the original word.  
+
+    Raises:
+        none 
+    '''
+
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     symbols = ['1','0','2','9','3','8','4','7','6','!',"/","?","|","[","{","]","}","+","=","$","<",">","@","%","^","-"]
     decrypted = ""
@@ -547,12 +584,12 @@ def decrypt_word(encrypted):
     return decrypted
 
 def main():
-    word = str(input("Enter a word: "))
-    decrypt = False
-    firstname = first_name(word)[0]
-    lastname = last_name(word)[0]
-    middlename = middle_name(word, first_name, last_name)[0]
-    encrypted = encrypt_word(word)
+    word = str(input("Enter a word/name: ")) # Prompts the user for a word or a name
+    decrypt = False # Sets decrypt to false (important for the validation of the encrypt function)
+    firstname = first_name(word)[0] # Finds the firstname and stores it
+    lastname = last_name(word)[0] # Finds the lastname and stores it
+    middlename = middle_name(word, first_name, last_name)[0] # Finds the middlename(s) and stores it
+    encrypted = encrypt_word(word) # Sets encrypted equal to the encrypted word
 
     while True:
         word, decrypt = pick_action(word, firstname, lastname, middlename, decrypt, encrypted) # Asks for the word/name and then the action
