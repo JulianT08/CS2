@@ -1,7 +1,12 @@
 import csv
-fhand = open('student_data_cs2.txt')
-with open('student_data.csv', 'w', newline='') as file:
+fhand = open('student_data_cs2.txt') #opens the file and sets the contents equal to fhand
+with open('student_data.csv', 'w', newline='') as file: #opens the file in write mode
 
+    '''
+the following lines set the variables equal to the data ranges in the brackets. 
+the last line writes the data to a new csv file with the variable's as the columns. 
+
+    '''
     for line in fhand:
         ID = line[0:4].strip()
         first_name = line[4:19].strip()
