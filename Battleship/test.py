@@ -11,7 +11,7 @@ user_positions = [
     'c1','c2','c3','c4','c5',
     'd1','d2','d3','d4','d5',
     'e1','e2','e3','e4','e5']
-
+choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
 def update_bot_board():
     bot_board = f'''
  ________________________
@@ -58,7 +58,7 @@ def bot_setup():
         bot_positions[index] = "S"        
     return bot_positions
 def user_setup():
-    for choice in range(5):
+    for choice in range(10):
         user_choice = str.lower(input("Enter the coordinates for your ship. "))
         if user_choice in user_positions:
             for i in user_positions:
@@ -72,11 +72,18 @@ def pick_first():
     tails = "tails"
     answer = str.lower(random.choice([heads, tails]))
     heads_or_tails = str.lower(input("Now we will pick who goes first.... Heads or Tails? "))
-
     if heads_or_tails == answer:
         print("User goes first! ")
     else:
         print("Bot goes first :( ")
+
+def bot_pick():
+    index = random.choice(choices)
+    choices.remove(index)
+    if user_positions[index] == "S":
+        print("HIT")       
+        user_positions[index] = "H"
+    return bot_positions, choices
 
 def main():
     #Setting up the BOT's board
@@ -88,7 +95,9 @@ def main():
     show_user_board()
     #Pick who goes first
     pick_first()
-
-
+    #BOT move
+    bot_pick()
+    #SHOW USER BOARD
+    show_user_board()
 if __name__ == "__main__":
     main()
