@@ -11,9 +11,16 @@ user_positions = [
     'c1','c2','c3','c4','c5',
     'd1','d2','d3','d4','d5',
     'e1','e2','e3','e4','e5']
-choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+bot_choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+user_choices = [
+    'a1','a2','a3','a4','a5',
+    'b1','b2','b3','b4','b5',
+    'c1','c2','c3','c4','c5',
+    'd1','d2','d3','d4','d5',
+    'e1','e2','e3','e4','e5']
 def update_bot_board():
     bot_board = f'''
+BOT BOARD:
  ________________________
 | {bot_positions[0]} || {bot_positions[1]} || {bot_positions[2]} || {bot_positions[3]} || {bot_positions[4]} |
  ________________________
@@ -29,6 +36,7 @@ def update_bot_board():
     return bot_board
 def update_user_board():
     user_board = f'''
+USER BOARD:
  ________________________
 | {user_positions[0]} || {user_positions[1]} || {user_positions[2]} || {user_positions[3]} || {user_positions[4]} |
  ________________________
@@ -58,7 +66,7 @@ def bot_setup():
         bot_positions[index] = "S"        
     return bot_positions
 def user_setup():
-    for choice in range(10):
+    for choice in range(5):
         user_choice = str.lower(input("Enter the coordinates for your ship. "))
         if user_choice in user_positions:
             for i in user_positions:
@@ -74,16 +82,32 @@ def pick_first():
     heads_or_tails = str.lower(input("Now we will pick who goes first.... Heads or Tails? "))
     if heads_or_tails == answer:
         print("User goes first! ")
+        return True
     else:
         print("Bot goes first :( ")
+        return False
 
 def bot_pick():
-    index = random.choice(choices)
-    choices.remove(index)
+    index = random.choice(bot_choices)
+    bot_choices.remove(index)
+    print(f" Bot picked: {user_positions[index]}")
     if user_positions[index] == "S":
         print("HIT")       
         user_positions[index] = "H"
-    return bot_positions, choices
+    return bot_positions, bot_choices
+def user_pick():
+    while True:
+        choice = str.lower(input("Enter the coordinates of your move.  "))
+        if choice in user_choices:
+            user_choice_index = user_choices.index(choice)
+            if bot_positions[user_choice_index] == "S":
+                print("HIT")
+                bot_positions[user_choices.index(choice)] = "H"
+                user_choices.remove(choice)
+                return bot_positions, user_choices
+            #user_choices.remove(choice)
+
+
 
 def main():
     #Setting up the BOT's board
@@ -94,10 +118,31 @@ def main():
     user_setup()
     show_user_board()
     #Pick who goes first
-    pick_first()
-    #BOT move
-    bot_pick()
-    #SHOW USER BOARD
-    show_user_board()
+    if pick_first() == True:
+        #SHOW BOT BOARD
+        show_bot_board()
+        #USER move
+        user_pick()
+        #SHOW BOT BOARD
+        show_bot_board() 
+        #BOT move
+        bot_pick()
+        #SHOW USER BOARD
+        show_user_board()
+        #SHOW BOT BOARD
+        show_bot_board()
+        #USER move
+        user_pick()
+        #SHOW BOT BOARD
+        show_bot_board() 
+    else:
+        #BOT move
+        bot_pick()
+        #SHOW USER BOARD
+        show_user_board()
+        #USER move
+        user_pick()
+        #SHOW BOT BOARD
+        show_bot_board() 
 if __name__ == "__main__":
     main()
