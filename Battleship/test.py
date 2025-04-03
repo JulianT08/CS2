@@ -1,23 +1,34 @@
 import random
+import time
+#This is the table for the positions of the bot. 
+#When showing the board, each cell will reference a position in this list
 bot_positions = [
     'a1','a2','a3','a4','a5',
     'b1','b2','b3','b4','b5',
     'c1','c2','c3','c4','c5',
     'd1','d2','d3','d4','d5',
     'e1','e2','e3','e4','e5']
+
+#This is the table for the positions of the user. 
+#When showing the board, each cell will reference a position in this list
 user_positions = [
     'a1','a2','a3','a4','a5',
     'b1','b2','b3','b4','b5',
     'c1','c2','c3','c4','c5',
     'd1','d2','d3','d4','d5',
     'e1','e2','e3','e4','e5']
-bot_choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+
+#The bot will choose a random number from this list and use it as the index for their move
+bot_choices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+
+#The user will pick an item from this list for their move
 user_choices = [
     'a1','a2','a3','a4','a5',
     'b1','b2','b3','b4','b5',
     'c1','c2','c3','c4','c5',
     'd1','d2','d3','d4','d5',
     'e1','e2','e3','e4','e5']
+
 def update_bot_board():
     bot_board = f'''
 BOT BOARD:
@@ -105,8 +116,17 @@ def user_pick():
                 bot_positions[user_choices.index(choice)] = "H"
                 user_choices.remove(choice)
                 return bot_positions, user_choices
-            #user_choices.remove(choice)
 
+def check_user_win():
+    if "S" not in bot_positions:
+        return True
+    else:
+        return False
+def check_bot_win():
+    if "S" not in user_positions:
+        return True
+    else:
+        return False
 
 
 def main():
@@ -117,32 +137,22 @@ def main():
     show_user_board()
     user_setup()
     show_user_board()
-    #Pick who goes first
-    if pick_first() == True:
-        #SHOW BOT BOARD
-        show_bot_board()
-        #USER move
-        user_pick()
-        #SHOW BOT BOARD
-        show_bot_board() 
-        #BOT move
-        bot_pick()
-        #SHOW USER BOARD
-        show_user_board()
-        #SHOW BOT BOARD
-        show_bot_board()
-        #USER move
-        user_pick()
-        #SHOW BOT BOARD
-        show_bot_board() 
+    #Pick who goes first and carry out the following scenarios based on the first player
+    if pick_first():
+        while check_user_win == False and check_bot_win == False:
+            show_bot_board()
+            user_pick()
+            time.sleep(2)
+            bot_pick()
+            show_user_board
+            time.sleep(3)
     else:
-        #BOT move
-        bot_pick()
-        #SHOW USER BOARD
-        show_user_board()
-        #USER move
-        user_pick()
-        #SHOW BOT BOARD
-        show_bot_board() 
+        while check_user_win == False and check_bot_win == False:
+            bot_pick()
+            show_user_board()
+            time.sleep(3)
+            show_bot_board()
+            user_pick()
+
 if __name__ == "__main__":
     main()
