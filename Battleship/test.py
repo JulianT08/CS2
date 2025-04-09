@@ -28,7 +28,7 @@ user_choices = [
     'c1','c2','c3','c4','c5',
     'd1','d2','d3','d4','d5',
     'e1','e2','e3','e4','e5']
-
+bot_ships = []
 def update_bot_board():
     bot_board = f'''
 BOT BOARD:
@@ -74,8 +74,8 @@ def bot_setup():
         choices = list(range(0, 25))
         index = random.choice(choices)
         choices.remove(index)
-        bot_positions[index] = "S"        
-    return bot_positions
+        bot_ships.append(bot_positions[index])
+    return bot_ships
 def user_setup():
     for choice in range(5):
         user_choice = str.lower(input("Enter the coordinates for your ship. "))
@@ -92,33 +92,31 @@ def pick_first():
     answer = str.lower(random.choice([heads, tails]))
     heads_or_tails = str.lower(input("Now we will pick who goes first.... Heads or Tails? "))
     if heads_or_tails == answer:
-        print("User goes first! ")
         return True
     else:
-        print("Bot goes first :( ")
         return False
 
 def bot_pick():
     index = random.choice(bot_choices)
     bot_choices.remove(index)
-    print(f" Bot picked: {user_positions[index]}")
+    print(f"Bot picked: {user_positions[index]}")
     if user_positions[index] == "S":
         print("HIT")       
         user_positions[index] = "H"
     return bot_positions, bot_choices
 def user_pick():
     while True:
-        choice = str.lower(input("Enter the coordinates of your move.  "))
+        choice = input("Enter the coordinates of your move.  ").lower()
         if choice in user_choices:
-            user_choice_index = user_choices.index(choice)
-            if bot_positions[user_choice_index] == "S":
+            if choice in bot_ships:
                 print("HIT")
                 bot_positions[user_choices.index(choice)] = "H"
-                user_choices.remove(choice)
+                bot_ships.remove(choice)
                 return bot_positions, user_choices
+            break
 
 def check_user_win():
-    if "S" not in bot_positions:
+    if not bot_ships:
         return True
     else:
         return False
@@ -139,20 +137,31 @@ def main():
     show_user_board()
     #Pick who goes first and carry out the following scenarios based on the first player
     if pick_first():
-        while check_user_win == False and check_bot_win == False:
+        print("User goes first! ")
+        while check_user_win() == False and check_bot_win() == False:
             show_bot_board()
             user_pick()
             time.sleep(2)
             bot_pick()
             show_user_board
             time.sleep(3)
+        if check_user_win():
+            print("Well done! You win.")
+        elif check_bot_win():
+            print("BOOOO, you lose. ")
+
     else:
-        while check_user_win == False and check_bot_win == False:
+        print("Bot goes first :( ")
+        while check_user_win() == False and check_bot_win() == False:
             bot_pick()
             show_user_board()
             time.sleep(3)
             show_bot_board()
             user_pick()
+        if check_user_win():
+            print("Well done! You win.")
+        elif check_bot_win():
+            print("BOOOO, you lose. ")
 
 if __name__ == "__main__":
     main()
