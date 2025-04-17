@@ -32,33 +32,33 @@ bot_ships = []
 def update_bot_board():
     bot_board = f'''
 BOT BOARD:      Guesses: {user_guesses}
- ________________________
+ ____________________________
 | {bot_positions[0]} || {bot_positions[1]} || {bot_positions[2]} || {bot_positions[3]} || {bot_positions[4]} |                      
- ________________________
+ ____________________________
 | {bot_positions[5]} || {bot_positions[6]} || {bot_positions[7]} || {bot_positions[8]} || {bot_positions[9]} | 
- ________________________
+ ____________________________
 | {bot_positions[10]} || {bot_positions[11]} || {bot_positions[12]} || {bot_positions[13]} || {bot_positions[14]} |
- ________________________
+ ____________________________
 | {bot_positions[15]} || {bot_positions[16]} || {bot_positions[17]} || {bot_positions[18]} || {bot_positions[19]} |
- ________________________
+ ____________________________
 | {bot_positions[20]} || {bot_positions[21]} || {bot_positions[22]} || {bot_positions[23]} || {bot_positions[24]} |
- ________________________
+ ____________________________
  '''
     return bot_board
 def update_user_board():
     user_board = f'''
 USER BOARD:
- ________________________
+ ____________________________
 | {user_positions[0]} || {user_positions[1]} || {user_positions[2]} || {user_positions[3]} || {user_positions[4]} |
- ________________________
+ ____________________________
 | {user_positions[5]} || {user_positions[6]} || {user_positions[7]} || {user_positions[8]} || {user_positions[9]} | 
- ________________________
+ ____________________________
 | {user_positions[10]} || {user_positions[11]} || {user_positions[12]} || {user_positions[13]} || {user_positions[14]} |
- ________________________
+ ____________________________
 | {user_positions[15]} || {user_positions[16]} || {user_positions[17]} || {user_positions[18]} || {user_positions[19]} |
- ________________________
+ ____________________________
 | {user_positions[20]} || {user_positions[21]} || {user_positions[22]} || {user_positions[23]} || {user_positions[24]} |
- ________________________
+ ____________________________
  '''
     return user_board
 
@@ -79,13 +79,14 @@ def bot_setup():
 def user_setup():
     for choice in range(5):
         while True:
-            user_choice = str.lower(input("Enter the coordinates for your ship. "))
+            user_choice = str.lower(input("Enter the coordinates for your ship. Must be between a1 and e5. "))
             if user_choice in user_positions:
                 for i in user_positions:
                     if user_choice == i:
                         index = user_positions.index(i)
                         user_positions[index] = "S"
-            break
+                        print(f"Ship placed at {user_choice}")
+                break
     return user_positions
 
 def pick_first():
@@ -167,7 +168,9 @@ def main():
             give_hint()
             user_pick()
             time.sleep(1)
+            print()
             bot_pick()
+            print()
             show_user_board()
             time.sleep(1)
         if check_user_win():
@@ -179,11 +182,13 @@ def main():
         print("Bot goes first :( ")
         while check_user_win() == False and check_bot_win() == False:
             bot_pick()
+            print()
             show_user_board()
             time.sleep(1)
             show_bot_board()
             give_hint()
             user_pick()
+            print()
         if check_user_win():
             print("Well done! You win.")
         elif check_bot_win():
