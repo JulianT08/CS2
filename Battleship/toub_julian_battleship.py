@@ -37,34 +37,34 @@ bot_ships = []
 def update_bot_board():
     bot_board = f'''
 BOT BOARD:
- ____________________________
-|  {bot_positions[0]}   |  {bot_positions[1]}   |  {bot_positions[2]}   |  {bot_positions[3]}  |  {bot_positions[4]}  |                      
- ____________________________
-|  {bot_positions[5]}  |  {bot_positions[6]}  |  {bot_positions[7]}  | {bot_positions[8]}  | {bot_positions[9]} | 
- ____________________________
-| {bot_positions[10]}  | {bot_positions[11]}  | {bot_positions[12]}  | {bot_positions[13]} | {bot_positions[14]} |
- ____________________________
-| {bot_positions[15]}  | {bot_positions[16]}  | {bot_positions[17]}  | {bot_positions[18]} | {bot_positions[19]} |
- ____________________________
-| {bot_positions[20]}  | {bot_positions[21]}  | {bot_positions[22]}  | {bot_positions[23]} | {bot_positions[24]} |
- ____________________________
- '''
+________________________________
+   {bot_positions[0]}  |  {bot_positions[1]}  |  {bot_positions[2]}  |  {bot_positions[3]}  |  {bot_positions[4]}  
+________________________________
+   {bot_positions[5]}  |  {bot_positions[6]}  |  {bot_positions[7]}  |  {bot_positions[8]}  |  {bot_positions[9]} 
+________________________________
+   {bot_positions[10]} |  {bot_positions[11]} |  {bot_positions[12]} |  {bot_positions[13]} |  {bot_positions[14]} 
+________________________________
+   {bot_positions[15]} |  {bot_positions[16]} |  {bot_positions[17]} |  {bot_positions[18]} |  {bot_positions[19]} 
+________________________________
+   {bot_positions[20]} |  {bot_positions[21]} |  {bot_positions[22]} |  {bot_positions[23]} |  {bot_positions[24]} 
+________________________________
+'''
     return bot_board
 def update_user_board():
     user_board = f'''
 USER BOARD:
- ____________________________
-|  {user_positions[0]}  |  {user_positions[1]}  |  {user_positions[2]}  |  {user_positions[3]} |  {user_positions[4]} |                      
- ____________________________
-|  {user_positions[5]}  |  {user_positions[6]}  |  {user_positions[7]}  | {user_positions[8]}  | {user_positions[9]} | 
- ____________________________
-| {user_positions[10]}  | {user_positions[11]}  | {user_positions[12]}  | {user_positions[13]} | {user_positions[14]} |
- ____________________________
-| {user_positions[15]}  | {user_positions[16]}  | {user_positions[17]}  | {user_positions[18]} | {user_positions[19]} |
- ____________________________
-| {user_positions[20]}  | {user_positions[21]}  | {user_positions[22]}  | {user_positions[23]} | {user_positions[24]} |
- ____________________________
- '''
+________________________________
+   {user_positions[0]}  |  {user_positions[1]}  |  {user_positions[2]}  |  {user_positions[3]}  |  {user_positions[4]}  
+________________________________
+   {user_positions[5]}  |  {user_positions[6]}  |  {user_positions[7]}  |  {user_positions[8]}  |  {user_positions[9]} 
+________________________________
+   {user_positions[10]} |  {user_positions[11]} |  {user_positions[12]} |  {user_positions[13]} |  {user_positions[14]} 
+________________________________
+   {user_positions[15]} |  {user_positions[16]} |  {user_positions[17]} |  {user_positions[18]} |  {user_positions[19]} 
+________________________________
+   {user_positions[20]} |  {user_positions[21]} |  {user_positions[22]} |  {user_positions[23]} |  {user_positions[24]} 
+________________________________
+'''
     return user_board
 
 def show_bot_board():
@@ -189,8 +189,11 @@ def main():
             show_bot_board()     
             user_pick()
             show_bot_board()
+            time.sleep(3)
+            os.system('cls' if os.name == 'nt' else 'clear')
             bot_pick()
             show_user_board()
+            time.sleep(3)
             os.system('cls' if os.name == 'nt' else 'clear')
             if check_user_win():
                 print("Well done! You win.")
@@ -207,11 +210,12 @@ def main():
                 print("Well done! You win. Bot is out of guesses :)")
                 sys.exit()
             bot_pick()
-            print()
             show_user_board()
-            user_pick()
+            time.sleep(3)
             os.system('cls' if os.name == 'nt' else 'clear')
+            user_pick()
             show_bot_board()
+            os.system('cls' if os.name == 'nt' else 'clear')
         if check_user_win():
             print("Well done! You win.")
             sys.exit()
