@@ -1,10 +1,30 @@
+'''
+toub_julian_battleship.py
+
+Description: This code is a take on the popular boardgame battleship. The user will play against
+the computer that randomly generates 5 spots for its ships and randomly generates moves. The user is told
+to place their 5 ships and then make moves to hit their opponents' ships. The user has the option to get 
+hints as to where the ships are.
+
+Features: Hint feature: allows the user to get a hint that partially reveals the location of a ship. 
+Time pauses: Pauses the program to allow for the user to see previous moves. 
+Win Checks: Checks for any wins by checking to see if both players still have unguessed ships. 
+
+Log: 1.0
+
+Bugs: Shows the user that their ship hasn't been placed in the case of an error but doesn't state why. 
+
+Tested By: Owen Chickering and Penelope Shepherd 
+'''
+
+
+
 import random
 import time
 import sys
-import os
 
 
-bot_turns = 0
+bot_turns = 0 #Sets the bot turns equal to 0. 
 # This is the table for the positions of the bot.
 # When showing the board, each cell will reference a position in this list
 bot_positions = [
@@ -189,12 +209,10 @@ def main():
             show_bot_board()     
             user_pick()
             show_bot_board()
-            time.sleep(3)
-            os.system('cls' if os.name == 'nt' else 'clear')
+            time.sleep(2)
             bot_pick()
             show_user_board()
-            time.sleep(3)
-            os.system('cls' if os.name == 'nt' else 'clear')
+            time.sleep(2)
             if check_user_win():
                 print("Well done! You win.")
             elif check_bot_win():
@@ -212,10 +230,10 @@ def main():
             bot_pick()
             show_user_board()
             time.sleep(3)
-            os.system('cls' if os.name == 'nt' else 'clear')
+            #os.system('cls' if os.name == 'nt' else 'clear')
             user_pick()
             show_bot_board()
-            os.system('cls' if os.name == 'nt' else 'clear')
+            #os.system('cls' if os.name == 'nt' else 'clear')
         if check_user_win():
             print("Well done! You win.")
             sys.exit()
