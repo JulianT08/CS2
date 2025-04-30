@@ -55,6 +55,18 @@ user_choices = [
     '21','22','23','24','25']
 bot_ships = []
 def update_bot_board():
+    '''
+    Updates the bot's board so that when it prints the board, it is refrencing the up-to-date variables. 
+
+    Args:
+        none
+    
+    Returns:
+        bot_board(str): The bot's board.  
+
+    Raises:
+        none
+    '''
     bot_board = f'''
 BOT BOARD:
 ________________________________
@@ -71,6 +83,18 @@ ________________________________
 '''
     return bot_board
 def update_user_board():
+    '''
+    Updates the user's board so that when it prints the board, it is refrencing the up-to-date variables. 
+
+    Args:
+        none
+    
+    Returns:
+        user_board(str): The user's board.  
+
+    Raises:
+        none
+    '''
     user_board = f'''
 USER BOARD:
 ________________________________
@@ -88,13 +112,51 @@ ________________________________
     return user_board
 
 def show_bot_board():
+    '''
+    Prints the bot's board. 
+
+    Args:
+        none
+    
+    Returns:
+        none 
+
+    Raises:
+        none
+    '''
     bot_board = update_bot_board()
     print(bot_board)
 def show_user_board():
+    '''
+    Prints the user's board. 
+
+    Args:
+        none
+    
+    Returns:
+        none 
+
+    Raises:
+        none
+    '''
     user_board = update_user_board()
     print(user_board)
 
 def bot_setup():
+    '''
+    Sets up the bot's board. Creates a list of indices from 0 - 24. Then, picks a random number and removes it from
+    the list and applies the index to the list, bot_positions. Finally, a ship is picked using the following logic
+    ship = possible_positions[random index].
+
+    Args:
+        none
+    
+    Returns:
+        bot_ships(list): The list of bot ship positions. 
+
+    Raises:
+        none
+    ''' 
     choices = list(range(0, 25))
     for i in range(5):
         index = random.choice(choices)
@@ -201,10 +263,12 @@ def main():
         print("User goes first! ")
         while check_user_win() == False and check_bot_win() == False:
             if user_out_of_guesses():
-                print('''BOOOO, you lose. Out of guesses :(''')
+                print('''
+                      BOOOO, you lose. Out of guesses :(''')
                 sys.exit()
             elif bot_out_of_guesses():
-                print("Well done! You win. Bot is out of guesses :)")
+                print('''
+                      Well done! You win. Bot is out of guesses :)''')
                 sys.exit()
             show_bot_board()     
             user_pick()
@@ -214,18 +278,24 @@ def main():
             show_user_board()
             time.sleep(2)
             if check_user_win():
-                print("Well done! You win.")
+                print('''
+                      Well done! You win.''')
+                sys.exit()
             elif check_bot_win():
-                print("BOOOO, you lose. ")
+                print('''
+                      BOOOO, you lose. ''')
+                sys.exit()
 
     else:
         print("Bot goes first :( ")
         while check_user_win() == False and check_bot_win() == False:
             if user_out_of_guesses():
-                print('''BOOOO, you lose. Out of guesses :(''')
+                print('''
+                      BOOOO, you lose. Out of guesses :(''')
                 sys.exit()
             elif bot_out_of_guesses():
-                print("Well done! You win. Bot is out of guesses :)")
+                print('''
+                      Well done! You win. Bot is out of guesses :)''')
                 sys.exit()
             bot_pick()
             show_user_board()
