@@ -6,9 +6,10 @@ the computer that randomly generates 5 spots for its ships and randomly generate
 to place their 5 ships and then make moves to hit their opponents' ships. The user has the option to get 
 hints as to where the ships are.
 
-Features: Hint feature: allows the user to get a hint that partially reveals the location of a ship. 
-Time pauses: Pauses the program to allow for the user to see previous moves. 
-Win Checks: Checks for any wins by checking to see if both players still have unguessed ships. 
+Features: 
+    Hint feature: allows the user to get a hint that partially reveals the location of a ship. 
+    Time pauses: Pauses the program to allow for the user to see previous moves. 
+    Win Checks: Checks for any wins by checking to see if both players still have unguessed ships. 
 
 Log: 1.0
 
@@ -164,9 +165,22 @@ def bot_setup():
         bot_ships.append(bot_positions[index])
     return bot_ships
 def user_setup():
+    '''
+    Allows the user to set up its board. The user enters a number for where they want their placed.
+    It then confirms whether the ship was placed or not based off if the input fits the requirements. 
+
+    Args:
+        none
+    
+    Returns:
+        user_positions(list): The list of user ship positions. 
+
+    Raises:
+        none
+    ''' 
     for choice in range(5):
         while True:
-            user_choice = input("Enter the coordinates for your ship. Must be between 1 and 25. ")
+            user_choice = input("Enter the location for your ship. Must be between 1 and 25. ")
             if user_choice in user_positions:
                 for i in user_positions:
                     if user_choice == i:
@@ -177,16 +191,46 @@ def user_setup():
     return user_positions
 
 def pick_first():
+    '''
+    Picks who goes first. Simple heads or tails game.  
+
+    Args:
+        none
+    
+    Returns:
+        True or False(bool): True if the user wins, false if not.
+
+    Raises:
+        none
+    ''' 
     heads = "heads"
     tails = "tails"
+    options = [heads, tails]
     answer = str.lower(random.choice([heads, tails]))
-    heads_or_tails = str.lower(input("Now we will pick who goes first.... Heads or Tails? "))
-    if heads_or_tails == answer:
-        return True
-    else:
-        return False
+    while True:
+        heads_or_tails = str.lower(input("Now we will pick who goes first.... Heads or Tails? "))
+        if heads_or_tails in options:
+            if heads_or_tails == answer:
+                return True
+            else:
+                return False
 
 def bot_pick():
+    '''
+    Makes a random move for the bot using a list that is constantly updated with the viable moves. 
+    Shows whether the bot hit or missed using emojis. 
+
+    Args:
+        none
+    
+    Returns:
+        bot_positions(list[str]): The list of bot ship positions. 
+        bot_choices(list[int]): The list of possible choices for the bot.
+        bot_turns(int): The number of moves that have been done by the bot. 
+
+    Raises:
+        none
+    ''' 
     global bot_turns
     index = random.choice(bot_choices[:len(user_positions)])
     bot_choices.remove(index)
@@ -198,6 +242,20 @@ def bot_pick():
         user_positions[index] = "💦"
     return bot_positions, bot_choices, bot_turns
 def user_pick():
+    '''
+    Lets the user make a move. Shows whether the move was a hit or miss using emojis. 
+    Updates the bot_positions to reflect the users move.  
+
+    Args:
+        none
+    
+    Returns:
+        bot_positions(list[str]): The list of bot ship positions. 
+        user_choices(list[str]): The list of possible user moves. 
+
+    Raises:
+        none
+    ''' 
     while True:
         choice = input("Enter the spot of your move.  OR TYPE 'H' FOR A HINT.  ").lower()
         if choice.lower() == "h":
@@ -224,28 +282,89 @@ def user_pick():
                 return bot_positions, user_choices
             break
 def give_hint():
+    '''
+    Gives the user a hint as to the row of an unguessed ship.  
+    Prints the row. 
+    
+    Args:
+        none
+    
+    Returns:
+        none 
+    
+    Raises:
+        none
+    '''   
     random_ship = random.choice(bot_ships)
     ship_index = bot_positions.index(random_ship)
     row_number = (ship_index // 5) + 1  # Calculate row number (1-based index)
     print(f"Here is a hint, one of the ships' location is in row {row_number}")
 
 def check_user_win():
+    '''
+    Checks if the user has won the game by eliminating all of the bot's ships.  
+
+    Args:
+        none
+    
+    Returns:
+        True or False(bool): True if the user wins, false if not.
+
+    Raises:
+        none
+    ''' 
     if not bot_ships:
         return True
     else:
         return False
 def check_bot_win():
+    '''
+    Checks if the bot has won the game by eliminating all of the user's ships.  
+
+    Args:
+        none
+    
+    Returns:
+        True or False(bool): True if the user wins, false if not.
+
+    Raises:
+        none
+    ''' 
     if "🚢" not in user_positions:
         return True
     else:
         return False
 
 def user_out_of_guesses():
+    '''
+    Checks if the user is out of guesses.  
+
+    Args:
+        none
+    
+    Returns:
+        True or False(bool): True if the user is out of guesses, false if not.
+
+    Raises:
+        none
+    ''' 
     if len(user_guesses) >= 10:
         return True
     else:
         return False
 def bot_out_of_guesses():
+    '''
+    Checks if the bot is out of guesses.  
+
+    Args:
+        none
+    
+    Returns:
+        True or False(bool): True if the bot is out of guesses, false if not.
+
+    Raises:
+        none
+    ''' 
     if bot_turns >= 10:
         return True
     else:
@@ -262,11 +381,11 @@ def main():
     if pick_first():
         print("User goes first! ")
         while check_user_win() == False and check_bot_win() == False:
-            if user_out_of_guesses():
+            if user_out_of_guesses(): #If the user is out of guesses, they lose.
                 print('''
                       BOOOO, you lose. Out of guesses :(''')
                 sys.exit()
-            elif bot_out_of_guesses():
+            elif bot_out_of_guesses(): #If the bot is out of guesses, it loses. 
                 print('''
                       Well done! You win. Bot is out of guesses :)''')
                 sys.exit()
@@ -289,11 +408,11 @@ def main():
     else:
         print("Bot goes first :( ")
         while check_user_win() == False and check_bot_win() == False:
-            if user_out_of_guesses():
+            if user_out_of_guesses(): #If the user is out of guesses, they lose.
                 print('''
                       BOOOO, you lose. Out of guesses :(''')
                 sys.exit()
-            elif bot_out_of_guesses():
+            elif bot_out_of_guesses(): #If the bot is out of guesses, it loses.
                 print('''
                       Well done! You win. Bot is out of guesses :)''')
                 sys.exit()
