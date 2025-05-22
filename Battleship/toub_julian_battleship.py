@@ -419,10 +419,8 @@ def main():
             bot_pick()
             show_user_board()
             time.sleep(3)
-            #os.system('cls' if os.name == 'nt' else 'clear')
             user_pick()
             show_bot_board()
-            #os.system('cls' if os.name == 'nt' else 'clear')
         if check_user_win():
             print("Well done! You win.")
             sys.exit()
