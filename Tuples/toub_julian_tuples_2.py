@@ -10,8 +10,9 @@ Log: 1.0
 hours = dict()
 table = list()
 
-fname = input("File name: ")
-fhand = open(fname)
+#fname = input("File name: ")
+#fhand = open(fname)
+fhand = open("mbox", "r")
 for line in fhand:
     words = line.split()
     if len(words) < 5 or words[0] != 'From':
@@ -24,7 +25,7 @@ for line in fhand:
         hour[hour] += 1  
 
 for key, val in list(hour.items()):
-    table.append((key, val))            
+    table.append((key, val))             
 
 table.sort()                            
 
