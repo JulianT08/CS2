@@ -10,9 +10,8 @@ Log: 1.0
 hours = dict()
 table = list()
 
-#fname = input("File name: ")
-#fhand = open(fname)
-fhand = open("mbox", "r")
+fname = input("File name: ")
+fhand = open(fname)
 for line in fhand:
     words = line.split()
     if len(words) < 5 or words[0] != 'From':
